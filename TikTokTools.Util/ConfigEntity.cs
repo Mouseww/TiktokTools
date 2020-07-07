@@ -17,15 +17,16 @@ namespace TikTokTools.Util
                 CenterTime =  3.5;
                 ExtendTime =0.01;
                 Video_BitrateChange =  (long)200;
-                Video_FrameRateChange = 0.4884512;
+                Video_FrameRateChange = 0;
                 ThreadNumber_Single =  32;
-                Gamma = 1;
-                Saturation =1;
+                Gamma = 1.1;
+                Saturation =1.1;
                 Brightness = 0;
                 Contrast = 1;
                 Repeat = true;
-                Filter = false;
+                Filter = true;
                 Audio = true;
+                AutoCZ = true;
         }
 
         public VideoSource VideoSource { get; set; }
@@ -66,5 +67,7 @@ namespace TikTokTools.Util
         public bool Repeat { get; set; }
 
         public bool Audio { get; set; }
+
+        public bool AutoCZ { get; set; }
     }
 }

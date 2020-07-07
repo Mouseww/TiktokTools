@@ -49,5 +49,7 @@ namespace TikTokTools.Model
 
         public string ViewCount { get; set; }
 
+        public string DownLink { get; set; }
+
     }
 }

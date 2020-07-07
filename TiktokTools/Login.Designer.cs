@@ -70,7 +70,7 @@
             this.Controls.Add(this.re_code);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Login";
-            this.Text = "TikTokTools v.1.0.8";
+            this.Text = "TikTokTools v.1.1.0";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -73,13 +73,6 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.check_all = new System.Windows.Forms.CheckBox();
             this.table_Video = new System.Windows.Forms.DataGridView();
-            this.btn_Read = new System.Windows.Forms.Button();
-            this.check_more = new System.Windows.Forms.CheckBox();
-            this.txt_url = new System.Windows.Forms.TextBox();
-            this.lab_address = new System.Windows.Forms.Label();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.AwemeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -88,6 +81,15 @@
             this.ForwardCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CommentCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ViewCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DownLink = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btn_Read = new System.Windows.Forms.Button();
+            this.check_more = new System.Windows.Forms.CheckBox();
+            this.txt_url = new System.Windows.Forms.TextBox();
+            this.lab_address = new System.Windows.Forms.Label();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.checkBoxCZ = new System.Windows.Forms.CheckBox();
             this.tab_model.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.table_Video)).BeginInit();
@@ -209,6 +211,7 @@
             this.label8.Size = new System.Drawing.Size(58, 13);
             this.label8.TabIndex = 14;
             this.label8.Text = "帧率变化:";
+            this.label8.Visible = false;
             // 
             // Video_FrameRate
             // 
@@ -216,6 +219,7 @@
             this.Video_FrameRate.Name = "Video_FrameRate";
             this.Video_FrameRate.Size = new System.Drawing.Size(72, 20);
             this.Video_FrameRate.TabIndex = 13;
+            this.Video_FrameRate.Visible = false;
             // 
             // label9
             // 
@@ -463,7 +467,7 @@
             this.check_cmd.AutoSize = true;
             this.check_cmd.Checked = true;
             this.check_cmd.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.check_cmd.Location = new System.Drawing.Point(19, 53);
+            this.check_cmd.Location = new System.Drawing.Point(123, 47);
             this.check_cmd.Name = "check_cmd";
             this.check_cmd.Size = new System.Drawing.Size(182, 17);
             this.check_cmd.TabIndex = 41;
@@ -522,8 +526,8 @@
             this.ShareCount,
             this.ForwardCount,
             this.CommentCount,
-            this.ViewCount});
-            this.table_Video.Enabled = false;
+            this.ViewCount,
+            this.DownLink});
             this.table_Video.Location = new System.Drawing.Point(17, 51);
             this.table_Video.Name = "table_Video";
             this.table_Video.ReadOnly = true;
@@ -531,6 +535,79 @@
             this.table_Video.Size = new System.Drawing.Size(1093, 233);
             this.table_Video.TabIndex = 14;
             this.table_Video.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.table_Video_CellClick);
+            // 
+            // select
+            // 
+            this.select.HeaderText = "全选";
+            this.select.Name = "select";
+            this.select.ReadOnly = true;
+            this.select.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.select.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.select.Width = 70;
+            // 
+            // AwemeId
+            // 
+            this.AwemeId.DataPropertyName = "AwemeId";
+            this.AwemeId.HeaderText = "AwemeId";
+            this.AwemeId.Name = "AwemeId";
+            this.AwemeId.ReadOnly = true;
+            this.AwemeId.Visible = false;
+            // 
+            // Desc
+            // 
+            this.Desc.DataPropertyName = "Desc";
+            this.Desc.HeaderText = "视频描述";
+            this.Desc.Name = "Desc";
+            this.Desc.ReadOnly = true;
+            this.Desc.Width = 400;
+            // 
+            // DiggCount
+            // 
+            this.DiggCount.DataPropertyName = "DiggCount";
+            this.DiggCount.HeaderText = "点赞数";
+            this.DiggCount.Name = "DiggCount";
+            this.DiggCount.ReadOnly = true;
+            this.DiggCount.Width = 90;
+            // 
+            // ShareCount
+            // 
+            this.ShareCount.DataPropertyName = "ShareCount";
+            this.ShareCount.HeaderText = "分享数";
+            this.ShareCount.Name = "ShareCount";
+            this.ShareCount.ReadOnly = true;
+            this.ShareCount.Width = 90;
+            // 
+            // ForwardCount
+            // 
+            this.ForwardCount.DataPropertyName = "ForwardCount";
+            this.ForwardCount.HeaderText = "转发数";
+            this.ForwardCount.Name = "ForwardCount";
+            this.ForwardCount.ReadOnly = true;
+            this.ForwardCount.Width = 85;
+            // 
+            // CommentCount
+            // 
+            this.CommentCount.DataPropertyName = "CommentCount";
+            this.CommentCount.HeaderText = "评论数";
+            this.CommentCount.Name = "CommentCount";
+            this.CommentCount.ReadOnly = true;
+            this.CommentCount.Width = 90;
+            // 
+            // ViewCount
+            // 
+            this.ViewCount.DataPropertyName = "ViewCount";
+            this.ViewCount.HeaderText = "播放量";
+            this.ViewCount.Name = "ViewCount";
+            this.ViewCount.ReadOnly = true;
+            this.ViewCount.Width = 90;
+            // 
+            // DownLink
+            // 
+            this.DownLink.DataPropertyName = "DownLink";
+            this.DownLink.HeaderText = "下载地址";
+            this.DownLink.Name = "DownLink";
+            this.DownLink.ReadOnly = true;
+            this.DownLink.Width = 150;
             // 
             // btn_Read
             // 
@@ -629,6 +706,7 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.AliceBlue;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.checkBoxCZ);
             this.panel2.Controls.Add(this.check_cmd);
             this.panel2.Controls.Add(this.check_Repeat);
             this.panel2.Controls.Add(this.Video_Mirroring);
@@ -638,70 +716,15 @@
             this.panel2.Size = new System.Drawing.Size(313, 77);
             this.panel2.TabIndex = 42;
             // 
-            // select
+            // checkBoxCZ
             // 
-            this.select.HeaderText = "全选";
-            this.select.Name = "select";
-            this.select.ReadOnly = true;
-            this.select.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.select.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.select.Width = 70;
-            // 
-            // AwemeId
-            // 
-            this.AwemeId.DataPropertyName = "AwemeId";
-            this.AwemeId.HeaderText = "视频ID";
-            this.AwemeId.Name = "AwemeId";
-            this.AwemeId.ReadOnly = true;
-            this.AwemeId.Width = 150;
-            // 
-            // Desc
-            // 
-            this.Desc.DataPropertyName = "Desc";
-            this.Desc.HeaderText = "视频描述";
-            this.Desc.Name = "Desc";
-            this.Desc.ReadOnly = true;
-            this.Desc.Width = 400;
-            // 
-            // DiggCount
-            // 
-            this.DiggCount.DataPropertyName = "DiggCount";
-            this.DiggCount.HeaderText = "点赞数";
-            this.DiggCount.Name = "DiggCount";
-            this.DiggCount.ReadOnly = true;
-            this.DiggCount.Width = 90;
-            // 
-            // ShareCount
-            // 
-            this.ShareCount.DataPropertyName = "ShareCount";
-            this.ShareCount.HeaderText = "分享数";
-            this.ShareCount.Name = "ShareCount";
-            this.ShareCount.ReadOnly = true;
-            this.ShareCount.Width = 90;
-            // 
-            // ForwardCount
-            // 
-            this.ForwardCount.DataPropertyName = "ForwardCount";
-            this.ForwardCount.HeaderText = "转发数";
-            this.ForwardCount.Name = "ForwardCount";
-            this.ForwardCount.ReadOnly = true;
-            this.ForwardCount.Width = 85;
-            // 
-            // CommentCount
-            // 
-            this.CommentCount.DataPropertyName = "CommentCount";
-            this.CommentCount.HeaderText = "评论数";
-            this.CommentCount.Name = "CommentCount";
-            this.CommentCount.ReadOnly = true;
-            this.CommentCount.Width = 90;
-            // 
-            // ViewCount
-            // 
-            this.ViewCount.DataPropertyName = "ViewCount";
-            this.ViewCount.HeaderText = "播放量";
-            this.ViewCount.Name = "ViewCount";
-            this.ViewCount.ReadOnly = true;
-            this.ViewCount.Width = 90;
+            this.checkBoxCZ.AutoSize = true;
+            this.checkBoxCZ.Location = new System.Drawing.Point(19, 47);
+            this.checkBoxCZ.Name = "checkBoxCZ";
+            this.checkBoxCZ.Size = new System.Drawing.Size(74, 17);
+            this.checkBoxCZ.TabIndex = 42;
+            this.checkBoxCZ.Text = "自动抽帧";
+            this.checkBoxCZ.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -713,7 +736,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "TikTok Tools V1.0.8";
+            this.Text = "TikTok Tools V1.1.0";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tab_model.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -790,6 +813,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ForwardCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn CommentCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn ViewCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DownLink;
+        private System.Windows.Forms.CheckBox checkBoxCZ;
     }
 }
 

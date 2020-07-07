@@ -27,7 +27,7 @@ namespace TiktokTools
         {
             var recode = re_code.Text.Trim();
             WebUtils webUtils = new WebUtils();
-            var getResult = webUtils.DoGet("http://www.fhcollege.com/api/api/TikTookReg?recode="+recode+"&guid=" + guid);
+            var getResult = webUtils.DoGet("https://www.fhcollege.com/api/api/TikTookReg?recode="+recode+"&guid=" + guid);
             if (getResult == "true")
             {
                 Form1 form1 = new Form1();

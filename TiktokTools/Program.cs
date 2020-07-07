@@ -29,7 +29,7 @@ namespace TikTokTools
                 Application.Run(new Form1());
             }
             else { Application.Run(new Login()); }
-           
+            //Application.Run(new Form1());
         }
     }
 }

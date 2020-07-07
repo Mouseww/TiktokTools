@@ -430,7 +430,7 @@ namespace TikTokTools.Util
                 }
                 if (isUA)
                 {
-                    request.UserAgent="Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Mobile Safari/537.36";
+                    request.UserAgent=string.Format("Mozilla/5.0 (Linux; Android {0}; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Mobile Safari/537.36",new Random().NextDouble()*10);
                 }
                 request.Method = "GET";
                 request.AllowAutoRedirect = AllowAutoRedirect;

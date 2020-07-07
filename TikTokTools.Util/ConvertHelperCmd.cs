@@ -23,6 +23,7 @@ namespace TikTokTools.Util
         IMediaInfo inputFile;
         public ConvertHelperCmd() {
         }
+
         public List<string> Convert(ConfigEntity configEntityTemp, Run logtemp, CancellationToken cttemp, Run changestatus)
         {
             FFmpeg.SetExecutablesPath(configEntityTemp.LocalPath);
@@ -36,31 +37,7 @@ namespace TikTokTools.Util
                 configEntity.SourcePath.Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).ToList()
                 : Directory.GetFiles(configEntity.SourcePath, ".", SearchOption.AllDirectories).ToList();
             log(string.Format("共有{0}个视频待处理", files.Count));
-
-            //ParallelOptions options = new ParallelOptions();
-            //options.MaxDegreeOfParallelism = 4;
-            //int index = 0;
-            //log(string.Format("开始多线程处理..."));
-            //Parallel.ForEach(files, (item) =>
-            //{
-            //    //log(string.Format("当前正在处理第{0}条", index ));
-            //    string filename = Guid.NewGuid().ToString();
-            //    string audiopath = LocalPath + @"\Audio\" + filename + ".mp3";
-            //    string videopath = LocalPath + @"\Video\" + filename + ".mp4";
-            //    string finishpath = LocalPath + @"\Finish\" + filename + ".mp4";
-            //    string output = LocalPath + @"\Video\" + filename + "_temp.mp4";
-            //    //log("正在抽离音频...");
-            //    BuildAudio(item, audiopath).GetAwaiter().GetResult();
-            //    //log("正在处理视频...");
-            //    AEVideo(item, output).GetAwaiter().GetResult();
-            //    //log("正在去除视频中的音频...");
-            //    BuildVideo(output, videopath).GetAwaiter().GetResult();
-            //    //log("正在将音频加入新的视频中...");
-            //    AddAudio(videopath, audiopath, finishpath).GetAwaiter().GetResult();
-            //    File.Delete(videopath.Replace(".mp4", "_tempvideo.mp4"));
-            //    index++;
-            //    log(string.Format("已处理{0}条", index));
-            //});
+            
             for (int i = 0; i < files.Count; i++)
             {
                 ct.ThrowIfCancellationRequested();
@@ -68,7 +45,7 @@ namespace TikTokTools.Util
                 {
                     log(string.Format("当前正在处理第{0}条", i + 1));
                     Match match = Regex.Match(files[i], @".+\\(.+)");
-                    string filename = match.Groups[1].Value;
+                    string filename = match.Groups[1].Value.Replace(".mp4","");
                     string inputpath = files[i];
                     string audiopath = (configEntity.LocalPath + @"\Audio\" + filename + ".mp3").Replace("\\\\", "\\");
                     string videopath = (configEntity.LocalPath + @"\Video\" + filename + ".mp4").Replace("\\\\", "\\");
@@ -83,35 +60,26 @@ namespace TikTokTools.Util
                         BuildAudio(inputpath, audiopath).GetAwaiter().GetResult();
                         ct.ThrowIfCancellationRequested();
                     }
-                    else
-                    {
-                        //log("正在临时添加音频...");
+                    
+                    log("正在进行调整视频...");
+                    AdjustVideo(inputpath, videopath).GetAwaiter().GetResult();
+                    ct.ThrowIfCancellationRequested();
 
-                        //AddAudio(inputpath, configEntity.LocalPath + @"\Temp.mp3", videopath.Replace(".mp4", "_haveAudio.mp4")).GetAwaiter().GetResult();
-                        //inputpath = videopath.Replace(".mp4", "_haveAudio.mp4");
-                        //ct.ThrowIfCancellationRequested();
-                    }
+                    inputpath = videopath;
                     log("正在进行视频帧处理...");
                     AEVideo(inputpath, output).GetAwaiter().GetResult();
                     ct.ThrowIfCancellationRequested();
-                    //log("正在抽离纯视频...");
-                    inputpath = output;
-                    //BuildVideo(inputpath, videopath.Replace(".mp4", "_NoAudio.mp4")).GetAwaiter().GetResult();
-                    //ct.ThrowIfCancellationRequested();
-                    log("正在进行调整视频...");
-                    //inputpath = videopath.Replace(".mp4", "_NoAudio.mp4");
-                    AdjustVideo(inputpath, videopath).GetAwaiter().GetResult();
-                    ct.ThrowIfCancellationRequested();
-                    inputpath = videopath;
+                    
+                    
                     if (inputFile.AudioStreams != null && inputFile.AudioStreams.Count() > 0)
                     {
-                        log("正在将音频加入新的视频中...");
-                        videopath = videopath.Replace(".mp4", "_Audio.mp4");
-                        AddAudio(inputpath, audiopath, videopath).GetAwaiter().GetResult();
 
-                        //runcmd(string.Format(" ffmpeg -i {0} -i {1} -vcodec copy -acodec copy {2}", inputpath, audiopath, videopath.Replace(".mp4", "_haveAudio.mp4")));
-                        //AddAudio(videopath, audiopath, finishpath).GetAwaiter().GetResult();
+                        inputpath = output.ToString();
+                        log("正在将音频加入新的视频中...");
+                        output = output.Replace(".mp4", "_Audio.mp4");
+                        AddAudio(inputpath, audiopath, output).GetAwaiter().GetResult();
                     }
+                    inputpath = output;
                     log("正在将进行视频信息处理...");
                     changeVideo(videopath, finishpath).GetAwaiter().GetResult();
                     log("视频信息处理完毕...");
@@ -157,21 +125,17 @@ namespace TikTokTools.Util
 
         private async Task BuildAudio(string input, string audiopath)
         {
-            //runcmd(string.Format("-i \"{0}\" -c:a aac -vn \"{1}\"", input, audiopath));
             var video = await FFmpeg.Conversions.FromSnippet.ExtractAudio(input, audiopath);
             await video.Start();
         }
 
-        private async Task BuildVideo(string input, string videopath)
-        {
-            runcmd(string.Format(" -i \"{0}\" -vcodec copy -an \"{1}\"", input, videopath));
-            //var video = await FFmpeg.Conversions.FromSnippet.ExtractVideo(input, videopath.Replace(".mp4", "_tempvideo_Old.mp4"));
-            //await video.Start();
-
-            //runcmd(videopath.Substring(0, index), );
-
-        }
-
+      
+        /// <summary>
+        /// 特殊调整（滤镜、画中画）
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="videopath"></param>
+        /// <returns></returns>
         private async Task AdjustVideo(string input, string videopath)
         {
             if (configEntity.Filter || configEntity.Video_Mirroring)
@@ -194,14 +158,22 @@ namespace TikTokTools.Util
             {
                 log("正在进行画中画...");
                 runcmd(string.Format("-i \"{0}\" -i \"{1}\" -filter_complex  overlay \"{2}\" -y", input, input, videopath));
+                //runcmd(string.Format("-i \"{0}\" -i \"{0}\" \"nullsrc=size=200x200 [base]; [0:v] setpts=PTS-STARTPTS,scale=200x200 [left]; [1:v] setpts=PTS-STARTPTS, scale=100x100 [right];[base][left] overlay=shortest=1 [tmp1]; [tmp1][right] overlay=shortest=1:x=0\" -c:v libx264 {1} - y", input, videopath));
 
                 log("视频画中画成功...");
             }
         }
 
+        /// <summary>
+        /// 增加音频到视频
+        /// </summary>
+        /// <param name="videopath"></param>
+        /// <param name="audiopath"></param>
+        /// <param name="finishpath"></param>
+        /// <returns></returns>
         private async Task AddAudio(string videopath, string audiopath, string finishpath)
         {
-            runcmd(string.Format("-i \"{0}\" -i \"{1}\" -vcodec copy -acodec copy \"{2}\" -y", videopath, audiopath, finishpath));
+            runcmd(string.Format("-i \"{0}\" -itsoffset 00:00:00.1 -i \"{1}\" -vcodec copy -acodec copy \"{2}\" -y", videopath, audiopath, finishpath));
 
             //var random = new Random();
             //var video = await FFmpeg.Conversions.FromSnippet.AddAudio(videopath, audiopath, finishpath);
@@ -215,12 +187,32 @@ namespace TikTokTools.Util
             //await video.Start();
         }
 
+        /// <summary>
+        /// 最终调整
+        /// </summary>
+        /// <param name="inputpath"></param>
+        /// <param name="outpath"></param>
+        /// <returns></returns>
         private async Task changeVideo(string inputpath, string outpath)
         {
             var oldvideo = inputFile.VideoStreams.FirstOrDefault();
-            runcmd(string.Format("-i \"{0}\" -b:v {1}k -s 720*1280 -r {2} -vf crop=iw-iw/100:ih-ih/100:iw/100:ih/100 \"{3}\" -y", inputpath, oldvideo.Bitrate / 1000 + configEntity.Video_BitrateChange, oldvideo.Framerate + configEntity.Video_FrameRateChange, outpath));
+            
+            runcmd(string.Format("-i \"{0}\"  -r {1} " +
+                "-vf crop=iw-2*iw/100:ih-2*ih/100:iw/100:ih/100 -s {3}*{4} " +//剪切+分辨率设置
+                //"-vf noise=alls=20:allf=t+u " +//降噪
+                                               //"-vf unsharp=luma_msize_x=7:luma_msize_y=7:luma_amount=1.3 " +//轻度锐化
+                                               //"-vf hue=\"H=2*PI*t:s=sin(2*PI*t)+1\" " +//色彩变化
+                                               //"-vf fade=in:0:90 " +//渐入
+                                               //"\"{3}\" -y", inputpath, oldvideo.Bitrate / 1000 + configEntity.Video_BitrateChange, oldvideo.Framerate + configEntity.Video_FrameRateChange, outpath));
+                "\"{2}\" -y", inputpath,60, outpath,oldvideo.Width, oldvideo.Height));
         }
 
+        /// <summary>
+        /// 拆分 微调整顺序
+        /// </summary>
+        /// <param name="inputpath"></param>
+        /// <param name="outputpath"></param>
+        /// <returns></returns>
         private async Task AEVideo(string inputpath, string outputpath)
         {
             string output1 = outputpath.Replace(".mp4", "_temp1.mp4");
@@ -229,49 +221,43 @@ namespace TikTokTools.Util
             string output4 = outputpath.Replace(".mp4", "_temp4.mp4");
             string output5 = outputpath.Replace(".mp4", "_temp5.mp4");
             string output6 = outputpath.Replace(".mp4", "_temp6.mp4");
-            runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.Remove_StartTime).ToString(), TimeSpan.FromSeconds(2.01).ToString(), output1));
-            //IConversion conversion1 = await FFmpeg.Conversions.FromSnippet.Split(inputpath, output1, TimeSpan.FromSeconds(configEntity.Remove_StartTime), TimeSpan.FromSeconds(2));
-            //conversion1.UseMultiThread(configEntity.ThreadNumber_Single);
-            //await conversion1.Start();
-            //IConversion conversion2 = await FFmpeg.Conversions.FromSnippet.Split(inputpath, output2, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(0.2));
-            //conversion2.UseMultiThread(configEntity.ThreadNumber_Single);
-            //await conversion2.Start();
-            //runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(2).ToString(), TimeSpan.FromSeconds(0.01).ToString(), output3));
-            //IConversion conversion3 = await FFmpeg.Conversions.FromSnippet.Split(inputpath, output3, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(0.01));
-            //conversion3.UseMultiThread(configEntity.ThreadNumber_Single);
-            //await conversion3.Start();
-            runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(2).ToString(), TimeSpan.FromSeconds(configEntity.CenterTime-2).ToString(), output4));
-            //IConversion conversion4 = await FFmpeg.Conversions.FromSnippet.Split(inputpath, output4, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(1.5));
-            //conversion4.UseMultiThread(configEntity.ThreadNumber_Single);
-            //await conversion4.Start();
-            runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.CenterTime).ToString(), TimeSpan.FromSeconds(configEntity.ExtendTime).ToString(), output5));
-            //IConversion conversion5 = await FFmpeg.Conversions.FromSnippet.Split(inputpath, output5, TimeSpan.FromSeconds(configEntity.CenterTime), TimeSpan.FromSeconds(configEntity.ExtendTime));
-            //conversion5.UseMultiThread(configEntity.ThreadNumber_Single);
-            //await conversion5.Start();
-            runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.CenterTime).ToString(), TimeSpan.FromSeconds(inputFile.Duration.TotalSeconds-  configEntity.Remove_EndTime- configEntity.CenterTime).ToString(), output6));
+            var oldvideo = inputFile.VideoStreams.FirstOrDefault();
+            var zNum = inputFile.Duration.TotalSeconds*oldvideo.Framerate/1;
+            if (configEntity.AutoCZ)
+            {
+                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.Remove_StartTime).ToString(), TimeSpan.FromSeconds(2).ToString(), output1, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25),""));
 
-            //IConversion conversion6 = await FFmpeg.Conversions.FromSnippet.Split(inputpath, output6, TimeSpan.FromSeconds(configEntity.CenterTime), TimeSpan.FromSeconds(inputFile.Duration.TotalMilliseconds - configEntity.CenterTime - configEntity.Remove_EndTime));
-            //conversion6.UseMultiThread(configEntity.ThreadNumber_Single);
-            //await conversion6.Start();
+                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(2.01).ToString(), TimeSpan.FromSeconds(configEntity.CenterTime - 2).ToString(), output4, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25), "-vf fade=in:0:1"));
+
+                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.CenterTime+0.01).ToString(), TimeSpan.FromSeconds((inputFile.Duration.TotalSeconds - configEntity.CenterTime)*0.4).ToString(), output5, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25),"-vf fade=in:0:1"));
+
+                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.CenterTime + (inputFile.Duration.TotalSeconds - configEntity.CenterTime)* 0.4+0.01).ToString(), TimeSpan.FromSeconds(inputFile.Duration.TotalSeconds - configEntity.CenterTime).ToString(), output6, "",""));
+            }
+            else
+            {
+                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.Remove_StartTime).ToString(), TimeSpan.FromSeconds(2.01).ToString(), output1, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25), ""));
+
+                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(2).ToString(), TimeSpan.FromSeconds(configEntity.CenterTime - 2+0.1).ToString(), output4, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25), "-vf fade=in:0:1"));
+
+                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.CenterTime).ToString(), TimeSpan.FromSeconds(configEntity.ExtendTime ).ToString(), output5, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25), "-vf fade=in:0:1"));
+
+                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.CenterTime).ToString(), TimeSpan.FromSeconds(inputFile.Duration.TotalSeconds - configEntity.Remove_EndTime - configEntity.CenterTime).ToString(), output6, "", ""));
+            }
+
             var txt = File.CreateText(configEntity.LocalPath + @"\FileList.txt");
             txt.WriteLine("file '" + output1 + "'");
-            //txt.WriteLine("file '" + output3 + "'");
             txt.WriteLine("file '" + output4 + "'");
             txt.WriteLine("file '" + output5 + "'");
             txt.WriteLine("file '" + output6 + "'");
             txt.Close();
             runcmd(string.Format("-f concat -safe 0 -i \"{0}\"  -c copy \"{1}\" -y", configEntity.LocalPath + @"\FileList.txt", outputpath));
             File.Delete(configEntity.LocalPath + @"\FileList.txt");
-            //ConnVideo(outputpath, output1, output3, output4, output5, output6).GetAwaiter().GetResult();
         }
-
-        private async Task ConnVideo(string outputpath, params string[] inputpath)
-        {
-            var conversion = await FFmpeg.Conversions.FromSnippet.Concatenate(outputpath, inputpath);
-            conversion.UseMultiThread(configEntity.ThreadNumber_Single);
-            await conversion.Start();
-        }
-
+        
+        /// <summary>
+        /// 使用ffmpeg.exe 控制台命令操作视频
+        /// </summary>
+        /// <param name="code"></param>
         private void runcmd(string code)
         {
             string str = code;
@@ -316,8 +302,11 @@ namespace TikTokTools.Util
 
         private string SplitVideo(params string[] param)
         {
-
-            return string.Format("-ss {1}  -i \"{0}\" -to {2} -c:v libx264  -strict experimental -an \"{3}\"", param);
+            var rui = new Random();
+            return string.Format(
+                "-ss {1}  -i \"{0}\" -to {2} -c:v libx264  -strict experimental -an  -r 60 {4} {5} " +
+                "-vf unsharp=luma_msize_x=7:luma_msize_y=7:luma_amount=" + rui.Next(1,15)*0.1+ " " +//轻度锐化 
+                "\"{3}\"", param);
         }
 
         private void CreatFolder()
@@ -354,57 +343,6 @@ namespace TikTokTools.Util
         /// 视频处理器ffmpeg.exe的位置
         /// </summary>
         public string FFmpegPath { get; set; }
-
-        /// <summary>
-        /// 调用ffmpeg.exe 执行命令
-        /// </summary>
-        /// <param name="Parameters">命令参数</param>
-        /// <returns>返回执行结果</returns>
-        private string RunProcess(string Parameters)
-        {
-            //创建一个ProcessStartInfo对象 并设置相关属性
-            var oInfo = new ProcessStartInfo(FFmpegPath, Parameters);
-            oInfo.UseShellExecute = false;
-            oInfo.CreateNoWindow = true;
-            oInfo.RedirectStandardOutput = true;
-            oInfo.RedirectStandardError = true;
-            oInfo.RedirectStandardInput = true;
-
-            //创建一个字符串和StreamReader 用来获取处理结果
-            string output = null;
-            StreamReader srOutput = null;
-
-            try
-            {
-                //调用ffmpeg开始处理命令
-                var proc = Process.Start(oInfo);
-                //获取输出流
-                srOutput = proc.StandardError;
-
-                //转换成string
-                output = srOutput.ReadToEnd();
-                proc.WaitForExit();
-
-
-
-
-                //关闭处理程序
-                proc.Close();
-            }
-            catch (Exception)
-            {
-                output = string.Empty;
-            }
-            finally
-            {
-                //释放资源
-                if (srOutput != null)
-                {
-                    srOutput.Close();
-                    srOutput.Dispose();
-                }
-            }
-            return output;
-        }
+        
     }
 }

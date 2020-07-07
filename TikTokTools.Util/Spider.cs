@@ -20,16 +20,19 @@ namespace TikTokTools.Util
         /// </summary>
         /// <param name="url"></param>
         public HtmlDocument GetHtmlDoc(string data, int type ) {
-            if (type == 0)
+            if (type == 1)
             {
-                var html = new HtmlWeb();
-                html.UserAgent = "user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1";
+                var html = new HtmlDocument();
+                //html.UserAgent = "user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1";
+                //html.UseCookies = true;
                 // From Web
-                return html.Load(data);
+                html.LoadHtml(data);
+                return html;
             }
             else {
                 var html = new HtmlWeb();
-                html.UserAgent = "user-agent=Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Safari/537.36";
+                html.UserAgent = "user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1";
+                //html.UseCookies = true;
                 // From Web
                 return html.Load(data);
 
