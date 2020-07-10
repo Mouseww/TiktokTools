@@ -93,6 +93,9 @@
     <Reference Include="HtmlAgilityPack, Version=1.11.23.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.23\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="jint, Version=2.10.3.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
       <HintPath>..\packages\jint.2.10.3\lib\net45\jint.dll</HintPath>
     </Reference>
@@ -105,6 +108,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Diagnostics.Contracts" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net.Http, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.Http.4.3.3\lib\net46\System.Net.Http.dll</HintPath>
@@ -145,6 +149,9 @@
     </Compile>
     <Compile Include="Model\FingerPrint.cs" />
     <Compile Include="Model\VideoInfo.cs" />
+    <Compile Include="Model\WebClientPro.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -219,6 +226,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TikTokTools.Update\TikTokTools.Update.csproj">
+      <Project>{7fb062ad-cd28-49dd-9fa3-ab3c0c8672c3}</Project>
+      <Name>TikTokTools.Update</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TikTokTools.Util\TikTokTools.Util.csproj">
       <Project>{44e6ca5f-3f46-41fe-bd39-0904b047c703}</Project>
       <Name>TikTokTools.Util</Name>

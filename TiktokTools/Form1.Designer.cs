@@ -33,18 +33,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.Remove_Right = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.Video_Bitrate = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.SourcePathText = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.ThreadNumber_SingleBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.Video_FrameRate = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.Video_Center_Extend = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.Video_Center = new System.Windows.Forms.TextBox();
             this.btn_Start = new System.Windows.Forms.Button();
@@ -90,6 +83,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.checkBoxCZ = new System.Windows.Forms.CheckBox();
+            this.Video_Center_Extend = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.tab_model.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.table_Video)).BeginInit();
@@ -129,33 +124,6 @@
             this.Remove_Right.Name = "Remove_Right";
             this.Remove_Right.Size = new System.Drawing.Size(72, 20);
             this.Remove_Right.TabIndex = 2;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(404, 30);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "码率变化:";
-            // 
-            // Video_Bitrate
-            // 
-            this.Video_Bitrate.Location = new System.Drawing.Point(485, 27);
-            this.Video_Bitrate.Name = "Video_Bitrate";
-            this.Video_Bitrate.Size = new System.Drawing.Size(67, 20);
-            this.Video_Bitrate.TabIndex = 5;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label4.Location = new System.Drawing.Point(473, 50);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(103, 12);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "默认随机增加200-250(k)";
             // 
             // label5
             // 
@@ -203,44 +171,10 @@
             this.label7.Text = "1~128(默认32)";
             this.label7.Visible = false;
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(602, 30);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(58, 13);
-            this.label8.TabIndex = 14;
-            this.label8.Text = "帧率变化:";
-            this.label8.Visible = false;
-            // 
-            // Video_FrameRate
-            // 
-            this.Video_FrameRate.Location = new System.Drawing.Point(681, 27);
-            this.Video_FrameRate.Name = "Video_FrameRate";
-            this.Video_FrameRate.Size = new System.Drawing.Size(72, 20);
-            this.Video_FrameRate.TabIndex = 13;
-            this.Video_FrameRate.Visible = false;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(218, 68);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(58, 13);
-            this.label9.TabIndex = 18;
-            this.label9.Text = "延长秒数:";
-            // 
-            // Video_Center_Extend
-            // 
-            this.Video_Center_Extend.Location = new System.Drawing.Point(297, 65);
-            this.Video_Center_Extend.Name = "Video_Center_Extend";
-            this.Video_Center_Extend.Size = new System.Drawing.Size(72, 20);
-            this.Video_Center_Extend.TabIndex = 17;
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(23, 68);
+            this.label10.Location = new System.Drawing.Point(405, 28);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(67, 13);
             this.label10.TabIndex = 16;
@@ -248,7 +182,7 @@
             // 
             // Video_Center
             // 
-            this.Video_Center.Location = new System.Drawing.Point(104, 65);
+            this.Video_Center.Location = new System.Drawing.Point(486, 25);
             this.Video_Center.Name = "Video_Center";
             this.Video_Center.Size = new System.Drawing.Size(67, 20);
             this.Video_Center.TabIndex = 15;
@@ -301,7 +235,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(22, 102);
+            this.label11.Location = new System.Drawing.Point(22, 65);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(34, 13);
             this.label11.TabIndex = 24;
@@ -311,7 +245,7 @@
             // 
             this.text_Gamma.Enabled = false;
             this.text_Gamma.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.text_Gamma.Location = new System.Drawing.Point(104, 99);
+            this.text_Gamma.Location = new System.Drawing.Point(104, 62);
             this.text_Gamma.Name = "text_Gamma";
             this.text_Gamma.Size = new System.Drawing.Size(67, 20);
             this.text_Gamma.TabIndex = 23;
@@ -321,7 +255,7 @@
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label12.Location = new System.Drawing.Point(96, 122);
+            this.label12.Location = new System.Drawing.Point(96, 85);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(95, 12);
             this.label12.TabIndex = 25;
@@ -358,7 +292,7 @@
             // text_Brightness
             // 
             this.text_Brightness.Enabled = false;
-            this.text_Brightness.Location = new System.Drawing.Point(297, 102);
+            this.text_Brightness.Location = new System.Drawing.Point(297, 65);
             this.text_Brightness.Name = "text_Brightness";
             this.text_Brightness.Size = new System.Drawing.Size(72, 20);
             this.text_Brightness.TabIndex = 29;
@@ -366,7 +300,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(219, 105);
+            this.label15.Location = new System.Drawing.Point(219, 68);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(34, 13);
             this.label15.TabIndex = 30;
@@ -377,7 +311,7 @@
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label16.Location = new System.Drawing.Point(295, 125);
+            this.label16.Location = new System.Drawing.Point(295, 88);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(93, 12);
             this.label16.TabIndex = 31;
@@ -672,26 +606,21 @@
             this.panel1.Controls.Add(this.text_Brightness);
             this.panel1.Controls.Add(this.label12);
             this.panel1.Controls.Add(this.Remove_Left);
-            this.panel1.Controls.Add(this.Video_Bitrate);
             this.panel1.Controls.Add(this.btn_OpenEnd);
             this.panel1.Controls.Add(this.Video_Center_Extend);
             this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.label11);
             this.panel1.Controls.Add(this.btn_Stop);
             this.panel1.Controls.Add(this.label9);
-            this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.Video_Center);
             this.panel1.Controls.Add(this.label18);
             this.panel1.Controls.Add(this.label10);
             this.panel1.Controls.Add(this.text_Saturation);
-            this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.Video_FrameRate);
             this.panel1.Controls.Add(this.label13);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label17);
             this.panel1.Controls.Add(this.label14);
-            this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.ThreadNumber_SingleBox);
             this.panel1.Controls.Add(this.label2);
@@ -726,6 +655,22 @@
             this.checkBoxCZ.Text = "自动抽帧";
             this.checkBoxCZ.UseVisualStyleBackColor = true;
             // 
+            // Video_Center_Extend
+            // 
+            this.Video_Center_Extend.Location = new System.Drawing.Point(679, 25);
+            this.Video_Center_Extend.Name = "Video_Center_Extend";
+            this.Video_Center_Extend.Size = new System.Drawing.Size(72, 20);
+            this.Video_Center_Extend.TabIndex = 17;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(600, 28);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(58, 13);
+            this.label9.TabIndex = 18;
+            this.label9.Text = "延长秒数:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -736,7 +681,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "TikTok Tools V1.1.0";
+            this.Text = "TikTok Tools V1.1.3";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tab_model.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -758,18 +703,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox Remove_Right;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox Video_Bitrate;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox SourcePathText;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox ThreadNumber_SingleBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox Video_FrameRate;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox Video_Center_Extend;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox Video_Center;
         private System.Windows.Forms.Button btn_Start;
@@ -815,6 +753,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ViewCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn DownLink;
         private System.Windows.Forms.CheckBox checkBoxCZ;
+        private System.Windows.Forms.TextBox Video_Center_Extend;
+        private System.Windows.Forms.Label label9;
     }
 }
 

@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TiktokTools.Model;
 using TikTokTools.Model;
 using TikTokTools.Util;
 
@@ -120,7 +121,9 @@ namespace TikTokTools
                      foreach (var item in videoInfoList)
                      {
                          ct.ThrowIfCancellationRequested();
-                         var filename = configEntity.LocalPath + "\\WebVideo\\" + item.Desc.Trim() + ".mp4";
+                         
+                         var filename = Regex.Replace(item.Desc.Trim(), "[\\-_*×――(^)|'$%~!@#$…&%￥—+=<>《》!！??？:：•`·、。，；,.;\"‘’“”-]", "");
+                         filename = configEntity.LocalPath + "\\WebVideo\\" + filename + ".mp4";
                          try
                          {
                              switch (configEntity.VideoSource)
@@ -203,8 +206,6 @@ namespace TikTokTools
                 Video_Mirroring = Video_Mirroring.Checked,
                 CenterTime = !string.IsNullOrWhiteSpace(Video_Center.Text) ? Convert.ToDouble(Video_Center.Text) : 3.5,
                 ExtendTime = !string.IsNullOrWhiteSpace(Video_Center_Extend.Text) ? Convert.ToDouble(Video_Center_Extend.Text) : 0.01,
-                Video_BitrateChange = !string.IsNullOrWhiteSpace(Video_Bitrate.Text) ? check_cmd.Checked ? (long)Convert.ToInt32(Video_Bitrate.Text) : (long)Convert.ToInt32(Video_Bitrate.Text) * 1000 : check_cmd.Checked ? (long)random.Next(20, 25) * 10 : (long)random.Next(20, 25) * 10 * 1000,
-                Video_FrameRateChange = !string.IsNullOrWhiteSpace(Video_FrameRate.Text) ? Convert.ToDouble(Video_FrameRate.Text) : random.NextDouble(),
                 ThreadNumber_Single = !string.IsNullOrWhiteSpace(ThreadNumber_SingleBox.Text) ? Convert.ToInt32(ThreadNumber_SingleBox.Text) : 32,
                 Gamma = !string.IsNullOrWhiteSpace(text_Gamma.Text) ? Convert.ToDouble(text_Gamma.Text) : 1,
                 Saturation = !string.IsNullOrWhiteSpace(text_Saturation.Text) ? Convert.ToDouble(text_Saturation.Text) : 1,
@@ -228,8 +229,6 @@ namespace TikTokTools
             Video_Mirroring.Checked = configEntity.Video_Mirroring;
             Video_Center.Text = configEntity.CenterTime.ToString();
             Video_Center_Extend.Text = configEntity.ExtendTime.ToString();
-            Video_Bitrate.Text = configEntity.Video_BitrateChange.ToString();
-            Video_FrameRate.Text = configEntity.Video_FrameRateChange.ToString();
             ThreadNumber_SingleBox.Text = configEntity.ThreadNumber_Single.ToString();
             text_Gamma.Text = configEntity.Gamma.ToString();
             text_Saturation.Text = configEntity.Saturation.ToString();
@@ -241,11 +240,13 @@ namespace TikTokTools
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            SetContorlVal(GetConfigEntity());
-            List<VideoInfo> videoInfos = new List<VideoInfo>();
-            table_Video.DataSource = videoInfos;
-            Logout("");
+            
+                SetContorlVal(GetConfigEntity());
+                List<VideoInfo> videoInfos = new List<VideoInfo>();
+                table_Video.DataSource = videoInfos;
+                Logout("");
         }
+        
 
         private void check_Filter_CheckedChanged(object sender, EventArgs e)
         {
@@ -359,7 +360,7 @@ namespace TikTokTools
             catch
             {
                 HttpWebRequest myHttpWebRequest1 = (HttpWebRequest)HttpWebRequest.Create(url);
-                myHttpWebRequest1.AllowAutoRedirect = false;
+                myHttpWebRequest1.AllowAutoRedirect = true;
                 HttpWebResponse myHttpWebResponse1 = (HttpWebResponse)myHttpWebRequest1.GetResponse();
                 html_302 = myHttpWebResponse1.ResponseUri.AbsoluteUri;
             }
@@ -538,7 +539,6 @@ namespace TikTokTools
             if (result.AwemeList==null||result.AwemeList.Count == 0)
             {
                 httpHelper = null;
-                Thread.Sleep(500);
                 return GetHtml(httpItem);
             }
             return result;
@@ -554,9 +554,10 @@ namespace TikTokTools
         {
             try
             {
-                WebClient webClient = new WebClient();
+                WebClientPro webClient = new WebClientPro();
                 webClient.Headers.Add("Host", new Uri(URL).Host);
-                webClient.Headers.Add("User-Agent" , GetUA());
+                webClient.Timeout = 5 * 60 * 1000;
+                //webClient.Headers.Add("User-Agent" , GetUA());
                 webClient.DownloadFile(URL, filename);
                 return true;
             }
@@ -754,54 +755,13 @@ namespace TikTokTools
             }
         }
 
-
-        public void GetVideoListByWebBrowser(string url)
-        {
-            HttpWebRequest myHttpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
-            myHttpWebRequest.AllowAutoRedirect = false;
-            HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
-            string rederictUrl = myHttpWebResponse.ResponseUri.AbsoluteUri;
-            var uid = rederictUrl.Replace("https://www.iesdouyin.com/share/user/", "").Split('?')[0];
-            ThreadWebBrowser("http://douyin.fhcollege.com/index.php?userid=" + uid);
-
-        }
-
-
-        private void ThreadWebBrowser(string url)
-        {
-            Thread tread = new Thread(new ParameterizedThreadStart(BeginCatch));
-            tread.SetApartmentState(ApartmentState.STA);
-            tread.Start(url);
-        }
-
-        private void BeginCatch(object obj)
-        {
-            string url = obj.ToString();
-            WebBrowser wb = new WebBrowser();
-            wb.ScriptErrorsSuppressed = true;
-            //在这里Navigate一个空白页面
-            wb.Navigate("about:blank");
-            string htmlcode = GetHtmlSource(url);
-            wb.Document.Write(htmlcode);
-
-        }
-        //WebClient取网页源码
-        private string GetHtmlSource(string Url)
-        {
-            string text1 = "";
-            try
-            {
-                System.Net.WebClient wc = new WebClient();
-                text1 = wc.DownloadString(Url);
-            }
-            catch (Exception exception1)
-            { }
-            return text1;
-        }
+        
 
         private string GetUA() {
             return string.Format("Mozilla/5.0 (iPhone; CPU iPhone OS {0}_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1", new Random().Next(10, 13));
              
         }
+
+        
     }
 }

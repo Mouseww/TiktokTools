@@ -5,9 +5,11 @@ VisualStudioVersion = 15.0.28307.1082
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiktokTools", "TiktokTools\TiktokTools.csproj", "{2FAFB24B-C0EE-40FD-9289-F3208BF158DC}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{4466B60A-20F5-4601-9EC0-06BD9C1B3F0E}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TikTookTool", "Setup\Setup.vdproj", "{4466B60A-20F5-4601-9EC0-06BD9C1B3F0E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTokTools.Util", "TikTokTools.Util\TikTokTools.Util.csproj", "{44E6CA5F-3F46-41FE-BD39-0904B047C703}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTokTools.Update", "TikTokTools.Update\TikTokTools.Update.csproj", "{7FB062AD-CD28-49DD-9FA3-AB3C0C8672C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,14 @@ Global
 		{44E6CA5F-3F46-41FE-BD39-0904B047C703}.Release|Any CPU.Build.0 = Release|Any CPU
 		{44E6CA5F-3F46-41FE-BD39-0904B047C703}.Release|x64.ActiveCfg = Release|Any CPU
 		{44E6CA5F-3F46-41FE-BD39-0904B047C703}.Release|x64.Build.0 = Release|Any CPU
+		{7FB062AD-CD28-49DD-9FA3-AB3C0C8672C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FB062AD-CD28-49DD-9FA3-AB3C0C8672C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FB062AD-CD28-49DD-9FA3-AB3C0C8672C3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7FB062AD-CD28-49DD-9FA3-AB3C0C8672C3}.Debug|x64.Build.0 = Debug|Any CPU
+		{7FB062AD-CD28-49DD-9FA3-AB3C0C8672C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FB062AD-CD28-49DD-9FA3-AB3C0C8672C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FB062AD-CD28-49DD-9FA3-AB3C0C8672C3}.Release|x64.ActiveCfg = Release|Any CPU
+		{7FB062AD-CD28-49DD-9FA3-AB3C0C8672C3}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

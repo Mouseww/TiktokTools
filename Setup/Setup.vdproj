@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:Setup"
+"ProjectName" = "8:TikTookTool"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -39,6 +39,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_0B38EF4C4A1F491887025FBA09AFB6FD"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_0BEAA9DB1E6F9ED226444390D79C9419"
         "OwnerKey" = "8:_4FF864709BE44902A1912663707BD49E"
         "MsmSig" = "8:_UNDEFINED"
@@ -53,6 +59,24 @@
         {
         "MsmKey" = "8:_14ABE313660296F698304B4E6A23DD76"
         "OwnerKey" = "8:_4FF864709BE44902A1912663707BD49E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_14ABE313660296F698304B4E6A23DD76"
+        "OwnerKey" = "8:_A9845E9CEEC11B490AC34C7E043684F8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_14ABE313660296F698304B4E6A23DD76"
+        "OwnerKey" = "8:_32525D3F589634181DB7F7A2B9F27544"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_14ABE313660296F698304B4E6A23DD76"
+        "OwnerKey" = "8:_ADAEB29CC9B743A699AB1025EAFCE448"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -99,6 +123,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_32525D3F589634181DB7F7A2B9F27544"
+        "OwnerKey" = "8:_ADAEB29CC9B743A699AB1025EAFCE448"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_32525D3F589634181DB7F7A2B9F27544"
+        "OwnerKey" = "8:_A9845E9CEEC11B490AC34C7E043684F8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_357004173BAB419ABB01CEF7017B4576"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -119,6 +155,18 @@
         {
         "MsmKey" = "8:_427ABC7B4CD9ED1F14F0DD14677DE680"
         "OwnerKey" = "8:_4FF864709BE44902A1912663707BD49E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_427ABC7B4CD9ED1F14F0DD14677DE680"
+        "OwnerKey" = "8:_A9845E9CEEC11B490AC34C7E043684F8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_427ABC7B4CD9ED1F14F0DD14677DE680"
+        "OwnerKey" = "8:_ADAEB29CC9B743A699AB1025EAFCE448"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -183,12 +231,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_5BC626782F01703CA29C7A4F6ECFF24E"
-        "OwnerKey" = "8:_B52E4C8D825C215D9017F1C35D336269"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6967E2371BD3B6FEAE4BA4DEC9192165"
         "OwnerKey" = "8:_4FF864709BE44902A1912663707BD49E"
         "MsmSig" = "8:_UNDEFINED"
@@ -197,6 +239,18 @@
         {
         "MsmKey" = "8:_6967E2371BD3B6FEAE4BA4DEC9192165"
         "OwnerKey" = "8:_357004173BAB419ABB01CEF7017B4576"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6B4A18A038384C7F84DFD580C99E8BB7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_787679BC2EE4407BB5FF464E3F31DFBF"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -227,6 +281,12 @@
         {
         "MsmKey" = "8:_86C6EC25667BB74B4E301F26DB8BA0AF"
         "OwnerKey" = "8:_4FF864709BE44902A1912663707BD49E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_873350587BFB8E5EC39F50179365BEF2"
+        "OwnerKey" = "8:_B52E4C8D825C215D9017F1C35D336269"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -279,13 +339,43 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_9F7F8808521348A2B23F6FE72ED42E15"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A13F1B7CDD4F0E82407DA8C22B871ADF"
         "OwnerKey" = "8:_B52E4C8D825C215D9017F1C35D336269"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_A1C7DC80FE20425CB1DE569CDFA3BE16"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A6C545B363DA434FA4A3BC62D7EB6F02"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A9845E9CEEC11B490AC34C7E043684F8"
+        "OwnerKey" = "8:_6B4A18A038384C7F84DFD580C99E8BB7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_AC52D485FE194B3AB0B174EDB0D1CEB1"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ADAEB29CC9B743A699AB1025EAFCE448"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -305,6 +395,12 @@
         {
         "MsmKey" = "8:_B52E4C8D825C215D9017F1C35D336269"
         "OwnerKey" = "8:_4FF864709BE44902A1912663707BD49E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B52E4C8D825C215D9017F1C35D336269"
+        "OwnerKey" = "8:_32525D3F589634181DB7F7A2B9F27544"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -369,14 +465,56 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_EF3DB5158D54477EA2C45ED45F4F83F7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_F1885818B5759402E430DEE328BFD9CF"
         "OwnerKey" = "8:_4FF864709BE44902A1912663707BD49E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_FFD63C87D7A46D19418B69995453C770"
+        "OwnerKey" = "8:_6B4A18A038384C7F84DFD580C99E8BB7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_9BBA9C2B7971847E89D4D3C30F19E535"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_EF3DB5158D54477EA2C45ED45F4F83F7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6B4A18A038384C7F84DFD580C99E8BB7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A9845E9CEEC11B490AC34C7E043684F8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FFD63C87D7A46D19418B69995453C770"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_ADAEB29CC9B743A699AB1025EAFCE448"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -413,6 +551,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_B52E4C8D825C215D9017F1C35D336269"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_873350587BFB8E5EC39F50179365BEF2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -599,7 +743,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\Setup.msi"
+        "OutputFilename" = "8:Release\\TikTokTool.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -754,6 +898,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0B38EF4C4A1F491887025FBA09AFB6FD"
+            {
+            "SourcePath" = "8:..\\TiktokTools\\bin\\Debug\\TikTokTools.Update.exe.config"
+            "TargetName" = "8:TikTokTools.Update.exe.config"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0BEAA9DB1E6F9ED226444390D79C9419"
@@ -940,11 +1104,42 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_32525D3F589634181DB7F7A2B9F27544"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Xabe.FFmpeg, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_32525D3F589634181DB7F7A2B9F27544"
+                    {
+                    "Name" = "8:Xabe.FFmpeg.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Xabe.FFmpeg.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_357004173BAB419ABB01CEF7017B4576"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TiktokTools, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TiktokTools, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_357004173BAB419ABB01CEF7017B4576"
@@ -1228,6 +1423,57 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6B4A18A038384C7F84DFD580C99E8BB7"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:TikTokTools.Update, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_6B4A18A038384C7F84DFD580C99E8BB7"
+                    {
+                    "Name" = "8:TikTokTools.Update.exe"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\TiktokTools\\bin\\Debug\\TikTokTools.Update.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_787679BC2EE4407BB5FF464E3F31DFBF"
+            {
+            "SourcePath" = "8:..\\TiktokTools\\bin\\Debug\\ICSharpCode.SharpZipLib.pdb"
+            "TargetName" = "8:ICSharpCode.SharpZipLib.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_80AD0F40EAC81ABAEF471227531B22D5"
             {
             "AssemblyRegister" = "3:1"
@@ -1304,6 +1550,37 @@
                     }
                 }
             "SourcePath" = "8:System.IO.Compression.FileSystem.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_873350587BFB8E5EC39F50179365BEF2"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:TRUE"
+            "AssemblyAsmDisplayName" = "8:System.Security.Cryptography.Algorithms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_873350587BFB8E5EC39F50179365BEF2"
+                    {
+                    "Name" = "8:System.Security.Cryptography.Algorithms.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Security.Cryptography.Algorithms.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
@@ -1454,6 +1731,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9F7F8808521348A2B23F6FE72ED42E15"
+            {
+            "SourcePath" = "8:..\\TiktokTools\\bin\\Debug\\TikTokTools.Util.pdb"
+            "TargetName" = "8:TikTokTools.Util.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A13F1B7CDD4F0E82407DA8C22B871ADF"
             {
             "AssemblyRegister" = "3:1"
@@ -1485,10 +1782,112 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A1C7DC80FE20425CB1DE569CDFA3BE16"
+            {
+            "SourcePath" = "8:..\\TiktokTools\\bin\\Debug\\ICSharpCode.SharpZipLib.xml"
+            "TargetName" = "8:ICSharpCode.SharpZipLib.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A6C545B363DA434FA4A3BC62D7EB6F02"
+            {
+            "SourcePath" = "8:..\\TiktokTools\\bin\\Debug\\TikTokTools.Update.pdb"
+            "TargetName" = "8:TikTokTools.Update.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A9845E9CEEC11B490AC34C7E043684F8"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:TikTokTools.Util, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_A9845E9CEEC11B490AC34C7E043684F8"
+                    {
+                    "Name" = "8:TikTokTools.Util.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:TikTokTools.Util.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AC52D485FE194B3AB0B174EDB0D1CEB1"
             {
             "SourcePath" = "8:..\\TiktokTools\\bin\\Debug\\TiktokTools.pdb"
             "TargetName" = "8:TiktokTools.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_ADAEB29CC9B743A699AB1025EAFCE448"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:TikTokTools.Util, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_ADAEB29CC9B743A699AB1025EAFCE448"
+                    {
+                    "Name" = "8:TikTokTools.Util.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\TiktokTools\\bin\\Debug\\TikTokTools.Util.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
             "Condition" = "8:"
@@ -1824,6 +2223,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EF3DB5158D54477EA2C45ED45F4F83F7"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_EF3DB5158D54477EA2C45ED45F4F83F7"
+                    {
+                    "Name" = "8:ICSharpCode.SharpZipLib.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\TiktokTools\\bin\\Debug\\ICSharpCode.SharpZipLib.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F1885818B5759402E430DEE328BFD9CF"
             {
             "AssemblyRegister" = "3:1"
@@ -1838,6 +2268,37 @@
                     }
                 }
             "SourcePath" = "8:System.Diagnostics.Tracing.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FFD63C87D7A46D19418B69995453C770"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_FFD63C87D7A46D19418B69995453C770"
+                    {
+                    "Name" = "8:ICSharpCode.SharpZipLib.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:ICSharpCode.SharpZipLib.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
@@ -1912,7 +2373,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Setup"
         "ProductCode" = "8:{BBCD4646-4E53-4FC2-BA03-EE0E331917CE}"
-        "PackageCode" = "8:{EB805B68-507D-460E-A778-A29507B1F78B}"
+        "PackageCode" = "8:{DF086CCA-2C62-4B7C-A41F-F3754CC1EB51}"
         "UpgradeCode" = "8:{DD0B957C-1E1D-41B8-86E6-29D3634AAF72}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -2461,7 +2922,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_4FF864709BE44902A1912663707BD49E"
             {
-            "SourcePath" = "8:..\\TiktokTools\\obj\\Release\\TiktokTools.exe"
+            "SourcePath" = "8:..\\TiktokTools\\obj\\Debug\\TiktokTools.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6C9B699127B242A9939A100640D09B9E"
