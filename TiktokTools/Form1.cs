@@ -26,6 +26,8 @@ namespace TikTokTools
 {
     public partial class Form1 : Form
     {
+        public List<VideoInfo> Awemes = new List<VideoInfo>();
+
         public Form1()
         {
             InitializeComponent();
@@ -123,6 +125,7 @@ namespace TikTokTools
                          ct.ThrowIfCancellationRequested();
                          
                          var filename = Regex.Replace(item.Desc.Trim(), "[\\-_*×――(^)|'$%~!@#$…&%￥—+=<>《》!！??？:：•`·、。，；,.;\"‘’“”-]", "");
+                         filename = filename.Trim() == "" ? DateTime.Now.ToString("yyyyMMddHHmmssfff"):filename;
                          filename = configEntity.LocalPath + "\\WebVideo\\" + filename + ".mp4";
                          try
                          {
@@ -660,7 +663,8 @@ namespace TikTokTools
                              videoInfo.ViewCount = result["playCount"].ToString();
                              videoInfo.ShareCount = result["shareCount"].ToString();
                              videoInfo.DownLink = "https://downloaderi.com/downloadvideo.php?url=" + result["videourl"].ToString();
-                             BinTableData(new List<VideoInfo>() { videoInfo });
+                             Awemes.Add(videoInfo);
+                             BinTableData(Awemes);
                              break;
                          case VideoSource.DouYin:
                              var url = HttpHelper.HttpGet(txt_url.Text);
@@ -762,6 +766,15 @@ namespace TikTokTools
              
         }
 
-        
+        private void btn_Clear_Click(object sender, EventArgs e)
+        {
+            Awemes.Clear();
+            table_Video.DataSource = new List<VideoInfo>();
+        }
+
+        private void table_Video_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+
+        }
     }
 }

@@ -80,6 +80,7 @@
     <Compile Include="Model\VideoSource.cs" />
     <Compile Include="PostDateClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxy.cs" />
     <Compile Include="Spider.cs" />
     <Compile Include="WebUtils.cs" />
   </ItemGroup>

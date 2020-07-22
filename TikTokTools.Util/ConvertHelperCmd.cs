@@ -137,18 +137,20 @@ namespace TikTokTools.Util
         /// <returns></returns>
         private string AdjustVideo(string input,string videopath)
         {
-            var result = input.ToString(); ;
+            var result = input.ToString();
+            var oldvideo = inputFile.VideoStreams.FirstOrDefault();
             if (configEntity.Filter || configEntity.Video_Mirroring)
             {
                 log("正在调整视频...");
                 var outpath = configEntity.Repeat? input.Replace(".mp4", "_Adjust.mp4"):videopath;
-                runcmd(string.Format(" -hwaccel qsv  -noautorotate -i \"{0}\" {1}  {2}  -vcodec h264_qsv  \"{3}\" -y",
+                
+                runcmd(string.Format(" -hwaccel qsv  -noautorotate -i \"{0}\" -b:v {4}k  {1}  {2}  -vcodec h264_qsv  \"{3}\" -y",
                    input,
                    configEntity.Filter ? string.Format("-vf eq=contrast={0}:brightness={1}:saturation={2}:gamma={3}", configEntity.Contrast,
                    configEntity.Brightness,
                    configEntity.Saturation,
                    configEntity.Gamma) : "",
-                   configEntity.Video_Mirroring ? "-vf hflip" : "", outpath
+                   configEntity.Video_Mirroring ? "-vf hflip" : "", outpath, (oldvideo.Bitrate/1000 +20)
                    ));
 
                 input = outpath;
@@ -159,7 +161,7 @@ namespace TikTokTools.Util
             if (configEntity.Repeat)
             {
                 log("正在进行画中画...");
-                runcmd(string.Format(" -hwaccel qsv -noautorotate -i \"{0}\" -i \"{1}\" -filter_complex  overlay  -vcodec h264_qsv  \"{2}\" -y", input, input, videopath));
+                runcmd(string.Format(" -hwaccel qsv -noautorotate -i \"{0}\" -i \"{1}\" -b:v "+(oldvideo.Bitrate / 1000 + 20) +"k -filter_complex  overlay  -vcodec h264_qsv  \"{2}\" -y", input, input, videopath));
                 //runcmd(string.Format("-i \"{0}\" -i \"{0}\" \"nullsrc=size=200x200 [base]; [0:v] setpts=PTS-STARTPTS,scale=200x200 [left]; [1:v] setpts=PTS-STARTPTS, scale=100x100 [right];[base][left] overlay=shortest=1 [tmp1]; [tmp1][right] overlay=shortest=1:x=0\" -c:v h264_qsv  {1} - y", input, videopath));
                 result = videopath.ToString();
                 log("视频画中画成功...");
@@ -200,7 +202,7 @@ namespace TikTokTools.Util
         {
             var oldvideo = inputFile.VideoStreams.FirstOrDefault();
             
-            runcmd(string.Format("-hwaccel qsv -noautorotate -i \"{0}\"  -r {1} " +
+            runcmd(string.Format("-hwaccel qsv -noautorotate -i \"{0}\"  -b:v " + (oldvideo.Bitrate / 1000 + 20) + "k   -r {1} " +
                 "-vf crop=iw-2*iw/100:ih-2*ih/100:iw/100:ih/100 -s {3}*{4} " +//剪切+分辨率设置
                                                                               //"-vf noise=alls=20:allf=t+u " +//降噪
                                                                               //"-vf unsharp=luma_msize_x=7:luma_msize_y=7:luma_amount=1.3 " +//轻度锐化
@@ -274,7 +276,7 @@ namespace TikTokTools.Util
             
            
             txt.Close();
-            runcmd(string.Format("-hwaccel qsv -c:v h264_qsv -noautorotate -f concat -safe 0 -i \"{0}\"  -c copy -vcodec h264_qsv  \"{1}\" -y", configEntity.LocalPath + @"\FileList.txt", outputpath));
+            runcmd(string.Format("-hwaccel qsv -c:v h264_qsv -noautorotate -f concat -safe 0 -i \"{0}\"  -b:v " + (oldvideo.Bitrate / 1000 + 20) + "k  -c copy -vcodec h264_qsv  \"{1}\" -y", configEntity.LocalPath + @"\FileList.txt", outputpath));
             File.Delete(configEntity.LocalPath + @"\FileList.txt");
         }
         
@@ -326,9 +328,10 @@ namespace TikTokTools.Util
 
         private string SplitVideo(params string[] param)
         {
+            var oldvideo = inputFile.VideoStreams.FirstOrDefault();
             var rui = new Random();
             return string.Format(
-                "-hwaccel qsv -noautorotate -ss {1}  -i \"{0}\" -to {2}    -strict experimental -an  {4} {5} " +
+                "-hwaccel qsv -noautorotate -ss {1}  -i \"{0}\" -to {2}   -b:v "+ (oldvideo.Bitrate/1000 +20)+ "k -strict experimental -an  {4} {5} " +
                 "-vf unsharp=luma_msize_x=7:luma_msize_y=7:luma_amount=" + rui.Next(1,15)*0.1+ " " +//轻度锐化 
                 "-vcodec h264_qsv  \"{3}\"", param);
         }

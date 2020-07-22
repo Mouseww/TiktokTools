@@ -64,6 +64,7 @@
             this.check_cmd = new System.Windows.Forms.CheckBox();
             this.tab_model = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btn_Clear = new System.Windows.Forms.Button();
             this.check_all = new System.Windows.Forms.CheckBox();
             this.table_Video = new System.Windows.Forms.DataGridView();
             this.select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -421,6 +422,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btn_Clear);
             this.tabPage2.Controls.Add(this.check_all);
             this.tabPage2.Controls.Add(this.table_Video);
             this.tabPage2.Controls.Add(this.btn_Read);
@@ -434,6 +436,16 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "解析模式";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btn_Clear
+            // 
+            this.btn_Clear.Location = new System.Drawing.Point(1023, 13);
+            this.btn_Clear.Name = "btn_Clear";
+            this.btn_Clear.Size = new System.Drawing.Size(75, 23);
+            this.btn_Clear.TabIndex = 16;
+            this.btn_Clear.Text = "清理列表";
+            this.btn_Clear.UseVisualStyleBackColor = true;
+            this.btn_Clear.Click += new System.EventHandler(this.btn_Clear_Click);
             // 
             // check_all
             // 
@@ -449,6 +461,7 @@
             // 
             this.table_Video.AllowUserToAddRows = false;
             this.table_Video.AllowUserToDeleteRows = false;
+            this.table_Video.AllowUserToOrderColumns = true;
             this.table_Video.BackgroundColor = System.Drawing.Color.White;
             this.table_Video.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.table_Video.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -464,7 +477,6 @@
             this.DownLink});
             this.table_Video.Location = new System.Drawing.Point(17, 51);
             this.table_Video.Name = "table_Video";
-            this.table_Video.ReadOnly = true;
             this.table_Video.RowHeadersVisible = false;
             this.table_Video.Size = new System.Drawing.Size(1093, 233);
             this.table_Video.TabIndex = 14;
@@ -474,7 +486,6 @@
             // 
             this.select.HeaderText = "全选";
             this.select.Name = "select";
-            this.select.ReadOnly = true;
             this.select.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.select.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.select.Width = 70;
@@ -484,7 +495,6 @@
             this.AwemeId.DataPropertyName = "AwemeId";
             this.AwemeId.HeaderText = "AwemeId";
             this.AwemeId.Name = "AwemeId";
-            this.AwemeId.ReadOnly = true;
             this.AwemeId.Visible = false;
             // 
             // Desc
@@ -492,7 +502,6 @@
             this.Desc.DataPropertyName = "Desc";
             this.Desc.HeaderText = "视频描述";
             this.Desc.Name = "Desc";
-            this.Desc.ReadOnly = true;
             this.Desc.Width = 400;
             // 
             // DiggCount
@@ -500,7 +509,6 @@
             this.DiggCount.DataPropertyName = "DiggCount";
             this.DiggCount.HeaderText = "点赞数";
             this.DiggCount.Name = "DiggCount";
-            this.DiggCount.ReadOnly = true;
             this.DiggCount.Width = 90;
             // 
             // ShareCount
@@ -508,7 +516,6 @@
             this.ShareCount.DataPropertyName = "ShareCount";
             this.ShareCount.HeaderText = "分享数";
             this.ShareCount.Name = "ShareCount";
-            this.ShareCount.ReadOnly = true;
             this.ShareCount.Width = 90;
             // 
             // ForwardCount
@@ -516,7 +523,6 @@
             this.ForwardCount.DataPropertyName = "ForwardCount";
             this.ForwardCount.HeaderText = "转发数";
             this.ForwardCount.Name = "ForwardCount";
-            this.ForwardCount.ReadOnly = true;
             this.ForwardCount.Width = 85;
             // 
             // CommentCount
@@ -524,7 +530,6 @@
             this.CommentCount.DataPropertyName = "CommentCount";
             this.CommentCount.HeaderText = "评论数";
             this.CommentCount.Name = "CommentCount";
-            this.CommentCount.ReadOnly = true;
             this.CommentCount.Width = 90;
             // 
             // ViewCount
@@ -532,7 +537,6 @@
             this.ViewCount.DataPropertyName = "ViewCount";
             this.ViewCount.HeaderText = "播放量";
             this.ViewCount.Name = "ViewCount";
-            this.ViewCount.ReadOnly = true;
             this.ViewCount.Width = 90;
             // 
             // DownLink
@@ -540,12 +544,11 @@
             this.DownLink.DataPropertyName = "DownLink";
             this.DownLink.HeaderText = "下载地址";
             this.DownLink.Name = "DownLink";
-            this.DownLink.ReadOnly = true;
             this.DownLink.Width = 150;
             // 
             // btn_Read
             // 
-            this.btn_Read.Location = new System.Drawing.Point(1030, 12);
+            this.btn_Read.Location = new System.Drawing.Point(934, 13);
             this.btn_Read.Name = "btn_Read";
             this.btn_Read.Size = new System.Drawing.Size(75, 23);
             this.btn_Read.TabIndex = 13;
@@ -556,7 +559,7 @@
             // check_more
             // 
             this.check_more.AutoSize = true;
-            this.check_more.Location = new System.Drawing.Point(950, 16);
+            this.check_more.Location = new System.Drawing.Point(854, 17);
             this.check_more.Name = "check_more";
             this.check_more.Size = new System.Drawing.Size(74, 17);
             this.check_more.TabIndex = 12;
@@ -568,7 +571,7 @@
             // 
             this.txt_url.Location = new System.Drawing.Point(95, 14);
             this.txt_url.Name = "txt_url";
-            this.txt_url.Size = new System.Drawing.Size(834, 20);
+            this.txt_url.Size = new System.Drawing.Size(740, 20);
             this.txt_url.TabIndex = 10;
             // 
             // lab_address
@@ -648,6 +651,8 @@
             // checkBoxCZ
             // 
             this.checkBoxCZ.AutoSize = true;
+            this.checkBoxCZ.Checked = true;
+            this.checkBoxCZ.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxCZ.Location = new System.Drawing.Point(19, 47);
             this.checkBoxCZ.Name = "checkBoxCZ";
             this.checkBoxCZ.Size = new System.Drawing.Size(74, 17);
@@ -681,7 +686,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "TikTok Tools V1.1.3";
+            this.Text = "TikTok Tools V1.1.5";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tab_model.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -743,6 +748,10 @@
         private System.Windows.Forms.Button btn_Read;
         private System.Windows.Forms.DataGridView table_Video;
         private System.Windows.Forms.CheckBox check_all;
+        private System.Windows.Forms.CheckBox checkBoxCZ;
+        private System.Windows.Forms.TextBox Video_Center_Extend;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btn_Clear;
         private System.Windows.Forms.DataGridViewCheckBoxColumn select;
         private System.Windows.Forms.DataGridViewTextBoxColumn AwemeId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Desc;
@@ -752,9 +761,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CommentCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn ViewCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn DownLink;
-        private System.Windows.Forms.CheckBox checkBoxCZ;
-        private System.Windows.Forms.TextBox Video_Center_Extend;
-        private System.Windows.Forms.Label label9;
     }
 }
 
