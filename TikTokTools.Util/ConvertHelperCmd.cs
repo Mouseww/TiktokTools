@@ -21,7 +21,13 @@ namespace TikTokTools.Util
         ConfigEntity configEntity;
         CancellationToken ct;
         IMediaInfo inputFile;
-        public ConvertHelperCmd() {
+        public ConvertHelperCmd()
+        {
+        }
+
+        public ConvertHelperCmd(ConfigEntity _configEntity)
+        {
+            configEntity = _configEntity;
         }
 
         public List<string> Convert(ConfigEntity configEntityTemp, Run logtemp, CancellationToken cttemp, Run changestatus)
@@ -37,7 +43,7 @@ namespace TikTokTools.Util
                 configEntity.SourcePath.Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).ToList()
                 : Directory.GetFiles(configEntity.SourcePath, ".", SearchOption.AllDirectories).ToList();
             log(string.Format("共有{0}个视频待处理", files.Count));
-            
+
             for (int i = 0; i < files.Count; i++)
             {
                 ct.ThrowIfCancellationRequested();
@@ -45,7 +51,7 @@ namespace TikTokTools.Util
                 {
                     log(string.Format("当前正在处理第{0}条", i + 1));
                     Match match = Regex.Match(files[i], @".+\\(.+)");
-                    string filename = match.Groups[1].Value.Replace(".mp4","");
+                    string filename = match.Groups[1].Value.Replace(".mp4", "");
                     string inputpath = files[i];
                     string audiopath = (configEntity.LocalPath + @"\Audio\" + filename + ".mp3").Replace("\\\\", "\\");
                     string videopath = (configEntity.LocalPath + @"\Video\" + filename + ".mp4").Replace("\\\\", "\\");
@@ -60,16 +66,16 @@ namespace TikTokTools.Util
                         BuildAudio(inputpath, audiopath).GetAwaiter().GetResult();
                         ct.ThrowIfCancellationRequested();
                     }
-                    
+
                     log("正在进行调整视频...");
-                    inputpath=AdjustVideo(inputpath, videopath);
+                    inputpath = AdjustVideo(inputpath, videopath);
                     ct.ThrowIfCancellationRequested();
-                    
+
                     log("正在进行视频帧处理...");
                     AEVideo(inputpath, output).GetAwaiter().GetResult();
                     ct.ThrowIfCancellationRequested();
-                    
-                    
+
+
                     if (inputFile.AudioStreams != null && inputFile.AudioStreams.Count() > 0)
                     {
 
@@ -117,40 +123,39 @@ namespace TikTokTools.Util
             {
                 File.Delete(item);
             }
-            
+
         }
 
 
 
         private async Task BuildAudio(string input, string audiopath)
         {
-            var video = await FFmpeg.Conversions.FromSnippet.ExtractAudio(input, audiopath);
-            await video.Start();
+            runcmd($"ffmpeg -y -i {input} -f mp3 {audiopath}");
         }
 
-      
+
         /// <summary>
         /// 特殊调整（滤镜、画中画）
         /// </summary>
         /// <param name="input"></param>
         /// <param name="videopath"></param>
         /// <returns></returns>
-        private string AdjustVideo(string input,string videopath)
+        private string AdjustVideo(string input, string videopath)
         {
             var result = input.ToString();
             var oldvideo = inputFile.VideoStreams.FirstOrDefault();
             if (configEntity.Filter || configEntity.Video_Mirroring)
             {
                 log("正在调整视频...");
-                var outpath = configEntity.Repeat? input.Replace(".mp4", "_Adjust.mp4"):videopath;
-                
-                runcmd(string.Format(" -hwaccel qsv  -noautorotate -i \"{0}\" -b:v {4}k  {1}  {2}  -vcodec h264_qsv  \"{3}\" -y",
+                var outpath = configEntity.Repeat ? input.Replace(".mp4", "_Adjust.mp4") : videopath;
+
+                runcmd(string.Format(" -hwaccel qsv  -noautorotate -i \"{0}\" -b:v {4}k -bufsize {4}k  {1}  {2}  -vcodec h264_qsv  \"{3}\" -y",
                    input,
                    configEntity.Filter ? string.Format("-vf eq=contrast={0}:brightness={1}:saturation={2}:gamma={3}", configEntity.Contrast,
                    configEntity.Brightness,
                    configEntity.Saturation,
                    configEntity.Gamma) : "",
-                   configEntity.Video_Mirroring ? "-vf hflip" : "", outpath, (oldvideo.Bitrate/1000 +20)
+                   configEntity.Video_Mirroring ? "-vf hflip" : "", outpath, (oldvideo.Bitrate / 1000 / 3 * 5)
                    ));
 
                 input = outpath;
@@ -161,7 +166,7 @@ namespace TikTokTools.Util
             if (configEntity.Repeat)
             {
                 log("正在进行画中画...");
-                runcmd(string.Format(" -hwaccel qsv -noautorotate -i \"{0}\" -i \"{1}\" -b:v "+(oldvideo.Bitrate / 1000 + 20) +"k -filter_complex  overlay  -vcodec h264_qsv  \"{2}\" -y", input, input, videopath));
+                runcmd(string.Format(" -hwaccel qsv -noautorotate -i \"{0}\" -i \"{1}\" -b:v " + (oldvideo.Bitrate / 1000 / 3 * 5) + "k -bufsize " + (oldvideo.Bitrate / 1000 / 3 * 5) + "k -filter_complex  overlay -vcodec h264_qsv  \"{2}\" -y", input, input, videopath));
                 //runcmd(string.Format("-i \"{0}\" -i \"{0}\" \"nullsrc=size=200x200 [base]; [0:v] setpts=PTS-STARTPTS,scale=200x200 [left]; [1:v] setpts=PTS-STARTPTS, scale=100x100 [right];[base][left] overlay=shortest=1 [tmp1]; [tmp1][right] overlay=shortest=1:x=0\" -c:v h264_qsv  {1} - y", input, videopath));
                 result = videopath.ToString();
                 log("视频画中画成功...");
@@ -201,15 +206,15 @@ namespace TikTokTools.Util
         private async Task changeVideo(string inputpath, string outpath)
         {
             var oldvideo = inputFile.VideoStreams.FirstOrDefault();
-            
-            runcmd(string.Format("-hwaccel qsv -noautorotate -i \"{0}\"  -b:v " + (oldvideo.Bitrate / 1000 + 20) + "k   -r {1} " +
-                "-vf crop=iw-2*iw/100:ih-2*ih/100:iw/100:ih/100 -s {3}*{4} " +//剪切+分辨率设置
-                                                                              //"-vf noise=alls=20:allf=t+u " +//降噪
-                                                                              //"-vf unsharp=luma_msize_x=7:luma_msize_y=7:luma_amount=1.3 " +//轻度锐化
-                                                                              //"-vf hue=\"H=2*PI*t:s=sin(2*PI*t)+1\" " +//色彩变化
-                                                                              //"-vf fade=in:0:90 " +//渐入
-                                                                              //"\"{3}\" -y", inputpath, oldvideo.Bitrate / 1000 + configEntity.Video_BitrateChange, oldvideo.Framerate + configEntity.Video_FrameRateChange, outpath));
-                "-vcodec h264_qsv  \"{2}\" -y", inputpath,60, outpath,oldvideo.Width, oldvideo.Height));
+
+            runcmd(string.Format("-hwaccel qsv -noautorotate -i \"{0}\"  -b:v " + (oldvideo.Bitrate / 1000 / 3 * 5) + "k -bufsize " + (oldvideo.Bitrate / 1000 / 3 * 5) + "k   -r {1} " +
+                $"-vf crop=iw-{1.5 * 2}*iw/100:ih-{configEntity.Crop * 2}*ih/100:{1.5}*iw/100:{configEntity.Crop}*ih/100 " + "-s {3}*{4} " +//剪切+分辨率设置
+                                                                                                                                                                        //"-vf noise=alls=20:allf=t+u " +//降噪
+                                                                                                                                                                        //"-vf unsharp=luma_msize_x=7:luma_msize_y=7:luma_amount=1.3 " +//轻度锐化
+                                                                                                                                                                        //"-vf hue=\"H=2*PI*t:s=sin(2*PI*t)+1\" " +//色彩变化
+                                                                                                                                                                        //"-vf fade=in:0:90 " +//渐入
+                                                                                                                                                                        //"\"{3}\" -y", inputpath, oldvideo.Bitrate / 1000 + configEntity.Video_BitrateChange, oldvideo.Framerate + configEntity.Video_FrameRateChange, outpath));
+                "-vcodec h264_qsv  \"{2}\" -y", inputpath, 60, outpath, oldvideo.Height * 2, oldvideo.Width * 2));
         }
 
         /// <summary>
@@ -220,71 +225,43 @@ namespace TikTokTools.Util
         /// <returns></returns>
         private async Task AEVideo(string inputpath, string outputpath)
         {
-            string output1 = outputpath.Replace(".mp4", "_temp1.mp4");
-            string output2 = outputpath.Replace(".mp4", "_temp2.mp4");
-            string output3 = outputpath.Replace(".mp4", "_temp3.mp4");
-            string output4 = outputpath.Replace(".mp4", "_temp4.mp4");
-            string output5 = outputpath.Replace(".mp4", "_temp5.mp4");
-            string output6 = outputpath.Replace(".mp4", "_temp6.mp4");
             var oldvideo = inputFile.VideoStreams.FirstOrDefault();
-            var zs = 1/oldvideo.Framerate ;
+            var zs = 1 / oldvideo.Framerate;
             var txt = File.CreateText(configEntity.LocalPath + @"\FileList.txt");
-            if (configEntity.AutoCZ)
+            double baseChangeSeconds = oldvideo.Duration.TotalSeconds / 10;
+            for (double i = 1; i <= oldvideo.Duration.TotalSeconds; i += baseChangeSeconds)
             {
-                for (int i = 1; i <= oldvideo.Duration.TotalSeconds; i++)
+                var tempOut = outputpath.Replace(".mp4", "_temp" + i + ".mp4");
+                double speed = new Random().Next(2, 6) * 0.25;
+                if (i == 1)
                 {
-                    var tempOut = outputpath.Replace(".mp4", "_temp" + i + ".mp4");
-                    if (i == 1)
-                    {
-                        runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.Remove_StartTime).ToString(), TimeSpan.FromSeconds(1).ToString(), tempOut, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25), ""));
-                    } else if (i+1> oldvideo.Duration.TotalSeconds) {
-                        runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(i - 1 + zs).ToString(), TimeSpan.FromSeconds(inputFile.Duration.TotalSeconds - (i - 1)).ToString(), tempOut, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25), ""));
-                    }
-                    else {
-                        runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(i - 1 + zs).ToString(), TimeSpan.FromSeconds(1).ToString(), tempOut, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25), "-vf fade=in:0:1"));
-                    }
-                    txt.WriteLine("file '" + tempOut + "'");
+                    runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.Remove_StartTime).ToString(), TimeSpan.FromSeconds(baseChangeSeconds).ToString(), tempOut, string.Format(" -filter:v \"setpts={0}*PTS\" ", speed), ""));
                 }
-
-                //runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.Remove_StartTime).ToString(), TimeSpan.FromSeconds(2).ToString(), output1, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25),""));
-
-                //runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(2+ zs).ToString(), TimeSpan.FromSeconds(configEntity.CenterTime - 2).ToString(), output4, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25), "-vf fade=in:0:1"));
-
-                //runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.CenterTime+ zs).ToString(), TimeSpan.FromSeconds((inputFile.Duration.TotalSeconds - configEntity.CenterTime)*0.4).ToString(), output5, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25),"-vf fade=in:0:1"));
-
-                //runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.CenterTime + (inputFile.Duration.TotalSeconds - configEntity.CenterTime)* 0.4+ zs).ToString(), TimeSpan.FromSeconds(inputFile.Duration.TotalSeconds - configEntity.CenterTime).ToString(), output6, "",""));
-                //txt.WriteLine("file '" + output1 + "'");
-                //txt.WriteLine("file '" + output4 + "'");
-                //txt.WriteLine("file '" + output5 + "'");
-                //txt.WriteLine("file '" + output6 + "'");
-            }
-            else
-            {
-                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.Remove_StartTime).ToString(), TimeSpan.FromSeconds(2).ToString(), output1, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25), ""));
-
-                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(2).ToString(), TimeSpan.FromSeconds(configEntity.CenterTime - 2).ToString(), output4, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25), "-vf fade=in:0:1"));
-
-                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.CenterTime).ToString(), TimeSpan.FromSeconds(configEntity.ExtendTime ).ToString(), output5, string.Format(" -filter:v \"setpts={0}*PTS\" ", new Random().Next(2, 6) * 0.25), "-vf fade=in:0:1"));
-
-                runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(configEntity.CenterTime).ToString(), TimeSpan.FromSeconds(inputFile.Duration.TotalSeconds - configEntity.Remove_EndTime - configEntity.CenterTime).ToString(), output6, "", ""));
-                txt.WriteLine("file '" + output1 + "'");
-                txt.WriteLine("file '" + output4 + "'");
-                txt.WriteLine("file '" + output5 + "'");
-                txt.WriteLine("file '" + output6 + "'");
+                else if (i + baseChangeSeconds > oldvideo.Duration.TotalSeconds)
+                {
+                    runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(i - baseChangeSeconds + zs).ToString(), TimeSpan.FromSeconds(inputFile.Duration.TotalSeconds - (i - baseChangeSeconds)).ToString(), tempOut, string.Format(" -filter:v \"setpts={0}*PTS\" ", speed), ""));
+                }
+                else
+                {
+                    runcmd(SplitVideo(inputpath, TimeSpan.FromSeconds(i - baseChangeSeconds + zs).ToString(), TimeSpan.FromSeconds(baseChangeSeconds).ToString(), tempOut, string.Format(" -filter:v \"setpts={0}*PTS\" ", speed), "-vf fade=in:0:1"));
+                }
+                txt.WriteLine("file '" + tempOut + "'");
             }
 
-            
-           
+
+
+
+
             txt.Close();
-            runcmd(string.Format("-hwaccel qsv -c:v h264_qsv -noautorotate -f concat -safe 0 -i \"{0}\"  -b:v " + (oldvideo.Bitrate / 1000 + 20) + "k  -c copy -vcodec h264_qsv  \"{1}\" -y", configEntity.LocalPath + @"\FileList.txt", outputpath));
+            runcmd(string.Format("-hwaccel qsv -c:v h264_qsv -noautorotate -f concat -safe 0 -i \"{0}\"  -b:v " + (oldvideo.Bitrate / 1000 / 3 * 5) + "k -bufsize " + (oldvideo.Bitrate / 1000 / 3 * 5) + "k  -c copy -vcodec h264_qsv  \"{1}\" -y", configEntity.LocalPath + @"\FileList.txt", outputpath));
             File.Delete(configEntity.LocalPath + @"\FileList.txt");
         }
-        
+
         /// <summary>
         /// 使用ffmpeg.exe 控制台命令操作视频
         /// </summary>
         /// <param name="code"></param>
-        private void runcmd(string code)
+        public void runcmd(string code)
         {
             string str = code;
 
@@ -331,8 +308,8 @@ namespace TikTokTools.Util
             var oldvideo = inputFile.VideoStreams.FirstOrDefault();
             var rui = new Random();
             return string.Format(
-                "-hwaccel qsv -noautorotate -ss {1}  -i \"{0}\" -to {2}   -b:v "+ (oldvideo.Bitrate/1000 +20)+ "k -strict experimental -an  {4} {5} " +
-                "-vf unsharp=luma_msize_x=7:luma_msize_y=7:luma_amount=" + rui.Next(1,15)*0.1+ " " +//轻度锐化 
+                "-hwaccel qsv -noautorotate -ss {1}  -i \"{0}\" -to {2}   -b:v " + (oldvideo.Bitrate / 1000 / 3 * 5) + "k -strict experimental -an  {4} {5} " +
+                "-vf unsharp=luma_msize_x=7:luma_msize_y=7:luma_amount=" + rui.Next(1, 15) * 0.1 + " " +//轻度锐化 
                 "-vcodec h264_qsv  \"{3}\"", param);
         }
 
@@ -370,6 +347,6 @@ namespace TikTokTools.Util
         /// 视频处理器ffmpeg.exe的位置
         /// </summary>
         public string FFmpegPath { get; set; }
-        
+
     }
 }

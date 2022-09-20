@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1082
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiktokTools", "TiktokTools\TiktokTools.csproj", "{2FAFB24B-C0EE-40FD-9289-F3208BF158DC}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TikTookTool", "Setup\Setup.vdproj", "{4466B60A-20F5-4601-9EC0-06BD9C1B3F0E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTokTools.Util", "TikTokTools.Util\TikTokTools.Util.csproj", "{44E6CA5F-3F46-41FE-BD39-0904B047C703}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTokTools.Update", "TikTokTools.Update\TikTokTools.Update.csproj", "{7FB062AD-CD28-49DD-9FA3-AB3C0C8672C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTok.Test", "TikTok.Test\TikTok.Test.csproj", "{181669EB-DF5B-4CCC-8702-979340032B71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiktokTools.Web", "TiktokTools.Web\TiktokTools.Web.csproj", "{98056F8A-794C-4946-A6FE-DAAE5B71498C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,12 +29,6 @@ Global
 		{2FAFB24B-C0EE-40FD-9289-F3208BF158DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2FAFB24B-C0EE-40FD-9289-F3208BF158DC}.Release|x64.ActiveCfg = Release|x64
 		{2FAFB24B-C0EE-40FD-9289-F3208BF158DC}.Release|x64.Build.0 = Release|x64
-		{4466B60A-20F5-4601-9EC0-06BD9C1B3F0E}.Debug|Any CPU.ActiveCfg = Debug
-		{4466B60A-20F5-4601-9EC0-06BD9C1B3F0E}.Debug|x64.ActiveCfg = Debug
-		{4466B60A-20F5-4601-9EC0-06BD9C1B3F0E}.Debug|x64.Build.0 = Debug
-		{4466B60A-20F5-4601-9EC0-06BD9C1B3F0E}.Release|Any CPU.ActiveCfg = Release
-		{4466B60A-20F5-4601-9EC0-06BD9C1B3F0E}.Release|x64.ActiveCfg = Debug
-		{4466B60A-20F5-4601-9EC0-06BD9C1B3F0E}.Release|x64.Build.0 = Debug
 		{44E6CA5F-3F46-41FE-BD39-0904B047C703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{44E6CA5F-3F46-41FE-BD39-0904B047C703}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44E6CA5F-3F46-41FE-BD39-0904B047C703}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -56,9 +50,16 @@ Global
 		{181669EB-DF5B-4CCC-8702-979340032B71}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{181669EB-DF5B-4CCC-8702-979340032B71}.Debug|x64.Build.0 = Debug|Any CPU
 		{181669EB-DF5B-4CCC-8702-979340032B71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{181669EB-DF5B-4CCC-8702-979340032B71}.Release|Any CPU.Build.0 = Release|Any CPU
 		{181669EB-DF5B-4CCC-8702-979340032B71}.Release|x64.ActiveCfg = Release|Any CPU
 		{181669EB-DF5B-4CCC-8702-979340032B71}.Release|x64.Build.0 = Release|Any CPU
+		{98056F8A-794C-4946-A6FE-DAAE5B71498C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98056F8A-794C-4946-A6FE-DAAE5B71498C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98056F8A-794C-4946-A6FE-DAAE5B71498C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{98056F8A-794C-4946-A6FE-DAAE5B71498C}.Debug|x64.Build.0 = Debug|Any CPU
+		{98056F8A-794C-4946-A6FE-DAAE5B71498C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98056F8A-794C-4946-A6FE-DAAE5B71498C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98056F8A-794C-4946-A6FE-DAAE5B71498C}.Release|x64.ActiveCfg = Release|Any CPU
+		{98056F8A-794C-4946-A6FE-DAAE5B71498C}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

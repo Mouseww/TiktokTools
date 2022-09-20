@@ -1,9 +1,8 @@
 ﻿
 @{
-    ViewBag.Title = "TestAPI";
+//ViewBag.Title = "TestAPI";
 }
 
-<h2>TestAPI</h2>
 <style>
     .input-group {
         width: 100%;
@@ -12,75 +11,61 @@
     .input-group-addon {
         width: 140px !important;
     }
-</style>
-<form action="/api/Convert/AdjustVideo" method="post" enctype="multipart/form-data" >
-<div class="row form-group-lg">
-    @*<div class="col-lg-12">
-        <div class="input-group">
-            <label class="input-group-addon">Request URL:</label>
-            <input id="requestUrl" type="text" class="form-control" />
-        </div>
-    </div>*@
-    @*<div class="col-lg-12">
-        <div class="input-group">
-            <label class="input-group-addon">Request Method:</label>
-            <input id="requestMethod" type="text" class="form-control" />
-        </div>
-    </div>
-    <div class="col-lg-12">
-        <div class="input-group">
-            <label class="input-group-addon">Content-Type:</label>
-            <input id="requestType" type="text" class="form-control" />
-        </div>
-    </div>*@
-    <div class="col-lg-12">
-        <div class="input-group">
-            <label class="input-group-addon">Request File:</label>
-            <input id="requestData" type="file" class="form-control input-file" name="file-1" />
-        </div>
-    </div>
 
-    <div class="col-lg-12">
-        <input type="submit" id="btn-sub" class="btn btn-danger" value="Send"  />
+    .center-panel{
+        position:absolute;
+        top:40%;
+        text-align:center;
+    }
+</style>
+@using (Html.BeginForm("AdjustVideo", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="container-fluid center-panel" >
+        <div class="col-lg-12">
+            <div class="input-group">
+                <label class="input-group-addon">选择要去重的视频:</label>
+                <input id="requestData" type="file" class="form-control input-file" name="file" />
+                <input type="submit" id="btn-sub" class="btn btn-danger" value="开始去重" />
+            </div>
+        </div>
     </div>
-</div>
-</form>
+}
 <script>
-        function ajax_sub() {
-            var url = "/api/Convert/AdjustVideo";
-            var method = "Post";
-            var contenttype = "application/x-www-form-urlencoded";
-            var Data = $('#requestData')[0].files[0];
-            var response = $("#video")
-            ajax_stream(url, Data, method, contenttype, response)
-            //"application/x-www-form-urlencoded"
+    function ajax_sub() {
+        var url = "/api/Convert/AdjustVideo";
+        var method = "Post";
+        var contenttype = "application/x-www-form-urlencoded";
+        var Data = $('#requestData')[0].files[0];
+        var response = $("#video")
+        ajax_stream(url, Data, method, contenttype, response)
+        //"application/x-www-form-urlencoded"
+    }
+    function ajax_stream(url, data, method, contenttype, element) {
+        var xmlHttp = null;
+        if (window.XMLHttpRequest) {// code for IE7, Firefox, Opera, etc.
+            xmlHttp = new XMLHttpRequest();
         }
-        function ajax_stream(url, data, method, contenttype, element) {
-            var xmlHttp = null;
-            if (window.XMLHttpRequest) {// code for IE7, Firefox, Opera, etc.
-                xmlHttp = new XMLHttpRequest();
-            }
-            else if (window.ActiveXObject) {// code for IE6, IE5
-                xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            if (xmlHttp == null) {
-                alert("Your browser does not support XMLHTTP.");
-                element.val('Your browser does not support XMLHTTP. Click the LOG link to monitor the procedure.');
-                return 0;
-            }
-            var xhr = xmlHttp;
-            xhr.open(method, url, true);
-            // 如果需要像 HTML 表单那样 POST 数据，请使用 setRequestHeader() 来添加 HTTP 头。然后在 send() 方法中规定您希望发送的数据：
-            xhr.setRequestHeader("Content-type", contenttype);
-            xhr.send(data);
-            var timer;
-            timer = window.setInterval(function () {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    window.clearTimeout(timer);
-                }
-                element.attr('src', xhr.responseText);
-                //element.val(xhr.responseText);
-                window.location.open = xhr.responseText;
-            }, 1000);
+        else if (window.ActiveXObject) {// code for IE6, IE5
+            xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
+        if (xmlHttp == null) {
+            alert("Your browser does not support XMLHTTP.");
+            element.val('Your browser does not support XMLHTTP. Click the LOG link to monitor the procedure.');
+            return 0;
+        }
+        var xhr = xmlHttp;
+        xhr.open(method, url, true);
+        // 如果需要像 HTML 表单那样 POST 数据，请使用 setRequestHeader() 来添加 HTTP 头。然后在 send() 方法中规定您希望发送的数据：
+        xhr.setRequestHeader("Content-type", contenttype);
+        xhr.send(data);
+        var timer;
+        timer = window.setInterval(function () {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                window.clearTimeout(timer);
+            }
+            element.attr('src', xhr.responseText);
+            //element.val(xhr.responseText);
+            window.location.open = xhr.responseText;
+        }, 1000);
+    }
 </script>

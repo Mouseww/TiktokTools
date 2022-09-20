@@ -82,6 +82,8 @@
             this.lab_address = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cqTextBox = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.checkBoxCZ = new System.Windows.Forms.CheckBox();
             this.Video_Center_Extend = new System.Windows.Forms.TextBox();
@@ -258,7 +260,7 @@
             this.label12.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.label12.Location = new System.Drawing.Point(96, 85);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(95, 12);
+            this.label12.Size = new System.Drawing.Size(92, 12);
             this.label12.TabIndex = 25;
             this.label12.Text = "0.1到10.0，默认值为1";
             // 
@@ -286,7 +288,7 @@
             this.label14.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.label14.Location = new System.Drawing.Point(679, 88);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(82, 12);
+            this.label14.Size = new System.Drawing.Size(79, 12);
             this.label14.TabIndex = 28;
             this.label14.Text = "0到3.0，默认值为1";
             // 
@@ -314,7 +316,7 @@
             this.label16.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.label16.Location = new System.Drawing.Point(295, 88);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(93, 12);
+            this.label16.Size = new System.Drawing.Size(90, 12);
             this.label16.TabIndex = 31;
             this.label16.Text = "-1.0到1.0，默认值为0";
             // 
@@ -352,7 +354,7 @@
             this.label18.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.label18.Location = new System.Drawing.Point(483, 86);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(93, 12);
+            this.label18.Size = new System.Drawing.Size(90, 12);
             this.label18.TabIndex = 35;
             this.label18.Text = "-2.0到2.0，默认值为1";
             // 
@@ -404,7 +406,7 @@
             this.check_cmd.CheckState = System.Windows.Forms.CheckState.Checked;
             this.check_cmd.Location = new System.Drawing.Point(123, 47);
             this.check_cmd.Name = "check_cmd";
-            this.check_cmd.Size = new System.Drawing.Size(182, 17);
+            this.check_cmd.Size = new System.Drawing.Size(170, 17);
             this.check_cmd.TabIndex = 41;
             this.check_cmd.Text = "极速模式（若不可用请关闭）";
             this.check_cmd.UseVisualStyleBackColor = true;
@@ -579,7 +581,7 @@
             this.lab_address.AutoSize = true;
             this.lab_address.Location = new System.Drawing.Point(14, 17);
             this.lab_address.Name = "lab_address";
-            this.lab_address.Size = new System.Drawing.Size(67, 13);
+            this.lab_address.Size = new System.Drawing.Size(61, 13);
             this.lab_address.TabIndex = 11;
             this.lab_address.Text = "视频地址：";
             // 
@@ -601,6 +603,8 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.cqTextBox);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.btn_Start);
             this.panel1.Controls.Add(this.LogBox);
@@ -633,6 +637,23 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1140, 280);
             this.panel1.TabIndex = 43;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(23, 108);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(72, 13);
+            this.label3.TabIndex = 44;
+            this.label3.Text = "裁切画面(%):";
+            // 
+            // cqTextBox
+            // 
+            this.cqTextBox.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.cqTextBox.Location = new System.Drawing.Point(105, 105);
+            this.cqTextBox.Name = "cqTextBox";
+            this.cqTextBox.Size = new System.Drawing.Size(67, 20);
+            this.cqTextBox.TabIndex = 43;
             // 
             // panel2
             // 
@@ -686,7 +707,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "TikTok Tools V1.1.5";
+            this.Text = "TikTok Tools V1.1.7";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tab_model.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -761,6 +782,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CommentCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn ViewCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn DownLink;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox cqTextBox;
     }
 }
 

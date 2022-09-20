@@ -25,18 +25,18 @@ namespace TikTokTools
             Application.SetCompatibleTextRenderingDefault(false);
 
             WebUtils webUtils = new WebUtils();
-            var newVersion = webUtils.DoGet("http://douyin.fhcollege.com/api/TikTookVersion.php");
+            var newVersion = webUtils.DoGet("https://douyin.fhcollege.com/api/TikTookVersion.php");
             var oldVersion = Application.ProductVersion.ToString();
 
-            string filename = Environment.CurrentDirectory + "\\1.1.3_update.zip";
-            if ( !File.Exists(filename))
-            {
-                WebClient webClient = new WebClient();
-                webClient.DownloadFile("http://douyin.fhcollege.com/api/1.1.3_update.zip", filename);
-                UnZip(filename, Environment.CurrentDirectory);
-                System.Diagnostics.Process.Start(Environment.CurrentDirectory + @"\TikTokTools.Update.exe");
-                System.Environment.Exit(0);
-            }
+            //string filename = Environment.CurrentDirectory + "\\1.1.3_update.zip";
+            //if ( !File.Exists(filename))
+            //{
+            //    WebClient webClient = new WebClient();
+            //    webClient.DownloadFile("https://douyin.fhcollege.com/api/1.1.3_update.zip", filename);
+            //    UnZip(filename, Environment.CurrentDirectory);
+            //    System.Diagnostics.Process.Start(Environment.CurrentDirectory + @"\TikTokTools.Update.exe");
+            //    System.Environment.Exit(0);
+            //}
             if (newVersion != oldVersion)
             {
                 System.Diagnostics.Process.Start(Environment.CurrentDirectory + @"\TikTokTools.Update.exe");
@@ -44,7 +44,7 @@ namespace TikTokTools
             }
 
 
-            var getResult = webUtils.DoGet("http://www.fhcollege.com/api/api/TikTookLogin?guid=" + guid);
+            var getResult = webUtils.DoGet("https://www.fhcollege.com/api/api/TikTookLogin?guid=" + guid);
             if (getResult == "true")
             {
                 Application.Run(new Form1());

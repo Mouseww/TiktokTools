@@ -23,10 +23,10 @@ namespace TikTokTools.Update
         private void Form_Update_Load(object sender, EventArgs e)
         {
             WebUtils webUtils = new WebUtils();
-            var newVersion = webUtils.DoGet("http://douyin.fhcollege.com/api/TikTookVersion.php");
+            var newVersion = webUtils.DoGet("https://douyin.fhcollege.com/api/TikTookVersion.php");
             WebClient webClient = new WebClient();
             string filename = Environment.CurrentDirectory + "\\" + newVersion + ".zip";
-            webClient.DownloadFile("http://douyin.fhcollege.com/api/" + newVersion + ".zip", filename);
+            webClient.DownloadFile("https://douyin.fhcollege.com/api/" + newVersion + ".zip", filename);
             UnZip(filename, Environment.CurrentDirectory);
         }
 

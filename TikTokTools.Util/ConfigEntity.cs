@@ -10,23 +10,24 @@ namespace TikTokTools.Util
     {
         public ConfigEntity()
         {
-                LocalPath = Environment.CurrentDirectory;
-                Remove_StartTime = 0.1;
-                Remove_EndTime = 0.1;
-                Video_Mirroring = true;
-                CenterTime =  3.5;
-                ExtendTime =0.01;
-                Video_BitrateChange =  (long)200;
-                Video_FrameRateChange = 0;
-                ThreadNumber_Single =  32;
-                Gamma = 1.1;
-                Saturation =1.1;
-                Brightness = 0;
-                Contrast = 1;
-                Repeat = true;
-                Filter = true;
-                Audio = true;
-                AutoCZ = true;
+            LocalPath = Environment.CurrentDirectory;
+            Remove_StartTime = 0.1;
+            Remove_EndTime = 0.1;
+            Video_Mirroring = true;
+            CenterTime = 3.5;
+            ExtendTime = 0.01;
+            Video_BitrateChange = (long)200;
+            Video_FrameRateChange = 0;
+            ThreadNumber_Single = 32;
+            Gamma = 1.1;
+            Saturation = 1.1;
+            Brightness = 0;
+            Contrast = 1;
+            Repeat = true;
+            Filter = true;
+            Audio = true;
+            AutoCZ = true;
+            Crop = 3;
         }
 
         public VideoSource VideoSource { get; set; }
@@ -69,5 +70,7 @@ namespace TikTokTools.Util
         public bool Audio { get; set; }
 
         public bool AutoCZ { get; set; }
+
+        public decimal Crop { get; set; }
     }
 }

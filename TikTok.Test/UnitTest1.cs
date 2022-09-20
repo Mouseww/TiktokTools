@@ -18,7 +18,7 @@ namespace TikTok.Test
             httpItem_List.WebProxy = p;
             Spider spider = new Spider(httpHelper.GetHtml(httpItem_List).Html, 0);
            
-            var nodeList = spider.GetNodeList("//*[@id=\"body-share-user\"]//li[@class=\"photo\"]/a");
+            //var nodeList = spider.GetNodeList("//*[@id=\"body-share-user\"]//li[@class=\"photo\"]/a");
             
             var a = 1;
         }

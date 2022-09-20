@@ -9,6 +9,8 @@ using System.IO.Compression;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using System.Security.Cryptography;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace TikTokTools.Util
 {
@@ -453,22 +455,23 @@ namespace TikTokTools.Util
                 throw ex;
             }
         }
-        public static string HttpPost(string url, string postData, string ContentType = "text/html;charset=UTF-8", WebHeaderCollection header = null)
+        public static string HttpPost(string url, string postData, string ContentType = "application/json", WebHeaderCollection header = null, CookieContainer cookie=null)
         {
-
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             if (header != null)
             {
                 request.Headers = header;
             }
-            request.Headers.Add("User-Agent", "Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1");
+            request.UserAgent = "Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1";
             request.Method = "POST";
             request.ContentType = ContentType;
-            Stream newStream = request.GetRequestStream();//创建一个Stream,赋值时写入HttpWebRequest对象提供的一个stream里面
+            //request.CookieContainer = cookie;
+            using (Stream newStream = request.GetRequestStream()) {
+                byte[] pp = Encoding.UTF8.GetBytes(postData);
 
-            byte[] pp = Encoding.UTF8.GetBytes(postData);
-            newStream.Write(pp, 0, pp.Length);
-            newStream.Close();
+                //request.ContentLength = pp.Length;
+                newStream.Write(pp, 0, pp.Length);
+            }
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream myResponseStream = response.GetResponseStream();
@@ -971,5 +974,19 @@ namespace TikTokTools.Util
         /// CookieCollection格式的Cookie集合同时也返回String类型的cookie
         /// </summary>
         CookieCollection
+    }
+
+    public class HttpWebContent : HttpContent
+    {
+        protected override Task SerializeToStreamAsync(Stream stream, TransportContext context)
+        {
+            return null;
+        }
+
+        protected override bool TryComputeLength(out long length)
+        {
+            length = 10000;
+            return true;
+        }
     }
 }

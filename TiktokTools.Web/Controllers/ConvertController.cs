@@ -9,9 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using TitokTools.Util;
-using TitokTools.Util.Entity;
-using static TitokTools.Util.ConvertHelper;
+using TikTokTools.Util;
+using static TikTokTools.Util.ConvertHelperCmd;
 
 namespace TiktokTools.Web.Controllers
 {
@@ -73,7 +72,7 @@ namespace TiktokTools.Web.Controllers
             Run changestatus = new Run(RunLog);
             try
             {
-                var resultdata = new ConvertHelper().Convert(config, log, ct, changestatus);
+                var resultdata = new ConvertHelperCmd().Convert(config, log, ct, changestatus);
                 foreach (var item in resultdata)
                 {
                     var array = item.Split('\\');

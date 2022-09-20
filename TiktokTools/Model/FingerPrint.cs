@@ -17,7 +17,7 @@ namespace Security
         {
             if (string.IsNullOrEmpty(fingerPrint))
             {
-                fingerPrint = GetHash("CPU >> " + cpuId() + "\nBIOS >> " + biosId() + "\nBASE >> " + baseId()+videoId() + "\nMAC >> " + macId());
+                 fingerPrint = GetHash("CPU >> " + cpuId() + "\nBIOS >> " + biosId() + "\nBASE >> " + baseId()+videoId() + "\nMAC >> " + macId());
             }
             return fingerPrint;
         }
@@ -92,6 +92,11 @@ namespace Security
                 {
                     try
                     {
+                        if (mo[wmiProperty] == null)
+                        {
+                            continue;
+                        }
+
                         result = mo[wmiProperty].ToString();
                         break;
                     }

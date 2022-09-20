@@ -1,8 +1,10 @@
 ﻿using HtmlAgilityPack;
 using Knyaz.Optimus;
+using Knyaz.Optimus.Environment;
 using Knyaz.Optimus.ResourceProviders;
 using Knyaz.Optimus.ScriptExecuting.Jint;
 using Knyaz.Optimus.TestingTools;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -13,10 +15,13 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Forms;
 using TiktokTools.Model;
 using TikTokTools.Model;
@@ -38,6 +43,7 @@ namespace TikTokTools
         delegate void SetTextCallback(string text);
 
         delegate void BinData(List<VideoInfo> awemes);
+        private string KuaiShouDID;
 
         public bool IsFilePath { get; set; }
 
@@ -123,33 +129,20 @@ namespace TikTokTools
                      foreach (var item in videoInfoList)
                      {
                          ct.ThrowIfCancellationRequested();
-                         
-                         var filename = Regex.Replace(item.Desc.Trim(), "[\\-_*×――(^)|'$%~!@#$…&%￥—+=<>《》!！??？:：•`·、。，；,.;\"‘’“”-]", "");
-                         filename = filename.Trim() == "" ? DateTime.Now.ToString("yyyyMMddHHmmssfff"):filename;
+
+                         var filename = Regex.Replace(item.Desc.Trim(), "[\\-_*×――(^)|'$%~!@#$…&%￥—+=<>\r\n《》!！??？:：•`·、。，；,.;\"‘’“”-]", "");
+                         filename = filename.Trim() == "" ? DateTime.Now.ToString("yyyyMMddHHmmssfff") : filename;
                          filename = configEntity.LocalPath + "\\WebVideo\\" + filename + ".mp4";
                          try
                          {
-                             switch (configEntity.VideoSource)
-                             {
-                                 case VideoSource.TikTok:
-                                     DownloadFile(item.DownLink, filename);
-                                     break;
-                                 case VideoSource.DouYin:
-                                     //GetVideo(string.Format("https://www.iesdouyin.com/share/video/{0}/?region=CN&mid={1}&u_code=17fk746j0&titleType=title&timestamp={1}&utm_campaign=client_share&app=aweme&utm_medium=ios&tt_from=copy&utm_source=copy", item.AwemeId, Timestamp()), filename, configEntity);
-                                     DownloadFile(item.DownLink, filename);
-                                     break;
-                                 case VideoSource.KuaiShou:
-                                     DownloadFile(item.DownLink, filename);
-                                     //GetVideo(item.AwemeId, filename, configEntity);
-                                     break;
-                             }
+                             DownloadFile(item.DownLink, filename, configEntity);
 
                          }
                          catch
                          {
                              Logout(item + "解析失败");
                          }
-                         //}
+
                          configEntity.SourcePath += configEntity.SourcePath == "" ? filename : "," + filename;
                      }
                  }
@@ -214,6 +207,7 @@ namespace TikTokTools
                 Saturation = !string.IsNullOrWhiteSpace(text_Saturation.Text) ? Convert.ToDouble(text_Saturation.Text) : 1,
                 Brightness = !string.IsNullOrWhiteSpace(text_Brightness.Text) ? Convert.ToDouble(text_Brightness.Text) : 0,
                 Contrast = !string.IsNullOrWhiteSpace(text_Contrast.Text) ? Convert.ToDouble(text_Contrast.Text) : 1,
+                Crop = !string.IsNullOrWhiteSpace(cqTextBox.Text) ? Convert.ToDecimal(cqTextBox.Text) : 3,
                 Repeat = check_Repeat.Checked,
                 Filter = check_Filter.Checked,
                 IsFilePath = IsFilePath,
@@ -239,17 +233,18 @@ namespace TikTokTools
             text_Contrast.Text = configEntity.Contrast.ToString();
             check_Repeat.Checked = configEntity.Repeat;
             check_Filter.Checked = configEntity.Filter;
+            cqTextBox.Text = configEntity.Crop.ToString();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
-                SetContorlVal(GetConfigEntity());
-                List<VideoInfo> videoInfos = new List<VideoInfo>();
-                table_Video.DataSource = videoInfos;
-                Logout("");
+
+            SetContorlVal(GetConfigEntity());
+            List<VideoInfo> videoInfos = new List<VideoInfo>();
+            table_Video.DataSource = videoInfos;
+            Logout("");
         }
-        
+
 
         private void check_Filter_CheckedChanged(object sender, EventArgs e)
         {
@@ -338,7 +333,7 @@ namespace TikTokTools
 
 
         }
-        
+
 
         private Hashtable GetTiktokVideo(string url)
         {
@@ -347,7 +342,7 @@ namespace TikTokTools
             var getResult1 = HttpClientHelper.postMessage("https://downloaderi.com/tiktok-service.php", postDateClassList, true, "Post");
             return JsonConvert.DeserializeObject<Hashtable>(getResult1);
         }
-        
+
 
         private string GetDouYinVideo(string url)
         {
@@ -363,6 +358,7 @@ namespace TikTokTools
             catch
             {
                 HttpWebRequest myHttpWebRequest1 = (HttpWebRequest)HttpWebRequest.Create(url);
+                myHttpWebRequest1.UserAgent = "Mozilla/5.0(Linux;Android6.0;Nexus5Build/MRA58N)AppleWebKit / 537.36(KHTML, likeGecko)Chrome / 75.0.3770.100MobileSafari / 537.36";
                 myHttpWebRequest1.AllowAutoRedirect = true;
                 HttpWebResponse myHttpWebResponse1 = (HttpWebResponse)myHttpWebRequest1.GetResponse();
                 html_302 = myHttpWebResponse1.ResponseUri.AbsoluteUri;
@@ -371,11 +367,11 @@ namespace TikTokTools
             string vid = "";
             try
             {
-                vid = Regex.Matches(html_302, "/(.*?)/")[2].Value.Split('/')[1];
+                vid = Regex.Matches(html_302, "/(.*?)/")[2].Value.Split('/')[1].Split('?')[0];
             }
             catch
             {
-                vid = html_302.Split('/')[html_302.Split('/').Length - 1];
+                vid = html_302.Split('/')[html_302.Split('/').Length - 1].Split('?')[0];
             }
             var dytk = Regex.Match(Regex.Match(html_302, "dytk(.*?)}").Value, "\\w+(?=\")").Value;
             var getResult1 = HttpHelper.HttpGet("https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=" + vid + "&dytk=" + dytk);
@@ -386,17 +382,10 @@ namespace TikTokTools
             var url_list = JsonConvert.DeserializeObject<List<string>>(play["url_list"].ToString());
             var videopath1 = url_list[0].ToString().Replace("playwm", "play");
             return GetVideoUrl(videopath1);
-            //try
-            //{
-            //    var httpResult = JsonConvert.DeserializeObject<Hashtable>(HttpHelper.HttpGet("https://www.apibug.com/jx/ajax.php?act=dsp&url=" + url));
-            //    return httpResult["url"].ToString();
-            //}
-            //catch {
-            //    return GetDouYinVideo(url);
-            //}
         }
 
-        private string GetKuaiShouVideo(string url) {
+        private string GetKuaiShouVideo(string url)
+        {
             WebUtils webUtils = new WebUtils();
             var getResult = webUtils.DoGet("http://tapi.douhe.cloud/douhe/api/video/get_video?url=" + url);
             var data = JsonConvert.DeserializeObject<Hashtable>(getResult);
@@ -414,10 +403,11 @@ namespace TikTokTools
         {
             try
             {
-                var html_302 =HttpHelper.HttpGet(videopath);
+                var html_302 = HttpHelper.HttpGet(videopath);
                 string reg = @"<a[^>]*href=([""'])?(?<href>[^'""]+)\1[^>]*>";
-                var link= Regex.Match(html_302, reg, RegexOptions.IgnoreCase).Groups["href"].Value;
-                if (link.Contains("http://v3-dy-o.zjcdn.com")) {
+                var link = Regex.Match(html_302, reg, RegexOptions.IgnoreCase).Groups["href"].Value;
+                if (link.Contains("http://v3-dy-o.zjcdn.com"))
+                {
                     return GetVideoUrl(videopath);
                 }
                 return link;
@@ -428,18 +418,19 @@ namespace TikTokTools
             }
         }
 
-        private IList<Aweme> GetVideoList(string url)
+        private IList<VideoInfo> GetVideoList(string url)
         {
             Logout("正在解析用户的视频列表...");
             ConfigEntity configEntity = GetConfigEntity(url);
-            IList<Aweme> result = new List<Aweme>();
+            IList<VideoInfo> result = new List<VideoInfo>();
 
             result = GetData(url, configEntity);
             return result;
         }
 
-        private IList<Aweme> GetData(string url, ConfigEntity configEntity)
+        private IList<VideoInfo> GetData(string url, ConfigEntity configEntity)
         {
+            List<VideoInfo> videoInfos = new List<VideoInfo>();
             switch (configEntity.VideoSource)
             {
                 case VideoSource.DouYin:
@@ -447,55 +438,102 @@ namespace TikTokTools
                     myHttpWebRequest.AllowAutoRedirect = true;
                     HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
                     string rederictUrl = myHttpWebResponse.ResponseUri.AbsoluteUri;
-                    var sec_uid = new Uri(rederictUrl).Query.Split('&')[1].Split('=')[1];
+                    var sec_uid = new Uri(rederictUrl).AbsolutePath.Replace("/user/", "");// Query.Split('&')[1].Split('=')[1];
                     HttpItem httpItem1 = new HttpItem();
                     httpItem1.UserAgent = "user-agent=" + GetUA();
                     httpItem1.URL = "https://www.iesdouyin.com/web/api/v2/aweme/post/?sec_uid=" + sec_uid + "&count=1000";
-                    return GetHtml(httpItem1).AwemeList;
-                case VideoSource.KuaiShou:
-                    HttpHelper httpHelper = new HttpHelper();
-                    IList<Aweme> awemes = new List<Aweme>();
-                    var didv = Timestamp();
-                    var sig = "587517af4e740d1c429f59ac";
-                    var cookies = string.Format("oing_setcoo=1; didv={0}; did=web_d2810931a64c4cc580c481b83a8cab63; sid=" + sig + "; ", didv);
-                    HttpItem httpItem_List = new HttpItem();
-                    httpItem_List.Cookie = cookies;
-                    httpItem_List.UserAgent = "user-agent=" + GetUA();
-                    httpItem_List.URL = url;
-                    Spider spider = new Spider(httpHelper.GetHtml(httpItem_List).Html,0);
-                    var nodeList = spider.GetNodeList("//*[@id=\"body-share-user\"]//li[@class=\"photo\"]/a");
-                    foreach (var item in nodeList)
+                    var awemes = GetHtml(httpItem1).AwemeList;
+                    videoInfos = awemes.Select(x => new VideoInfo(x)).ToList();
+                    Parallel.ForEach<VideoInfo>(videoInfos, (item) =>
                     {
-                        HttpItem httpItem = new HttpItem();
+                        item.DownLink = GetDouYinVideo("https://www.iesdouyin.com/share/video/" + item.AwemeId);
+                    });
+                    return videoInfos;
+                case VideoSource.KuaiShou:
 
-                        httpItem.Cookie = cookies;
-                        httpItem.UserAgent = "user-agent=" + GetUA();
-                        httpItem.URL = "https://v.kuaishou.com" + item.Attributes["href"].Value;
-                        var htmlResult = httpHelper.GetHtml(httpItem);
-                        Spider spiderItem = new Spider(htmlResult.Html, 1);
-                        var jsonStr = spiderItem.GetAttr("//*[@class=\"hide-pagedata\"]", "data-pagedata");
-                        var json = JsonConvert.DeserializeObject<Hashtable>(jsonStr.Replace("&#34;", "\""));
-                        var video = JsonConvert.DeserializeObject<Hashtable>(json["video"].ToString());
-                        var share = JsonConvert.DeserializeObject<Hashtable>(json["share"].ToString());
-                        awemes.Add(
-                            new Aweme()
-                            {
-                                AwemeId = video["Id"].ToString(),
-                                Desc = share["title"].ToString(),
-                                Statistics = new Statistics()
-                                {
-                                    DiggCount = Convert.ToInt32(video["likeCount"].ToString()),
-                                    AwemeId = video["Id"].ToString(),
-                                    CommentCount = Convert.ToInt32(video["commentCount"].ToString()),
-                                    PlayCount = Convert.ToInt32(video["viewCount"].ToString()),
-                                }
-                            });
-                        Thread.Sleep(1000);
-                    }
-                    return awemes;
+                    return GetKuaiShouList(url);
             }
             return null;
         }
+
+        private IList<VideoInfo> GetKuaiShouList(string url, double pcursor = 1.642669459008E12)
+        {
+            List<VideoInfo> videoInfos = new List<VideoInfo>();
+            try
+            {
+                string uid = new Uri(url).AbsolutePath.Replace("/profile/", "");
+                var query = new
+                {
+                    operationName = "visionProfilePhotoList",
+                    variables = new
+                    {
+                        userId = uid,
+                        pcursor = pcursor.ToString() + ".E12",
+                        page = "profile"
+                    },
+                    query = "fragment photoContent on PhotoEntity {  id  duration  caption  likeCount  viewCount  realLikeCount  coverUrl  photoUrl  photoH265Url  manifest  manifestH265  videoResource  coverUrls {    url    __typename  }  timestamp  expTag  animatedCoverUrl  distance  videoRatio  liked  stereoType  profileUserTopPhoto  musicBlocked  __typename}fragment feedContent on Feed {  type  author {    id    name    headerUrl    following    headerUrls {      url      __typename    }    __typename  }  photo {    ...photoContent    __typename  }  canAddComment  llsid  status  currentPcursor  __typename}query visionProfilePhotoList($pcursor: String, $userId: String, $page: String, $webPageArea: String) {  visionProfilePhotoList(pcursor: $pcursor, userId: $userId, page: $page, webPageArea: $webPageArea) {    result    llsid    webPageArea    feeds {      ...feedContent      __typename    }    hostName    pcursor    __typename  }}"
+                };
+                WebHeaderCollection webHeader = new WebHeaderCollection();
+                //webHeader.Add("Cookie",getKuaiShouCookie());
+                webHeader.Add("Cookie", $"kpf=PC_WEB; kpn=KUAISHOU_VISION; clientid=3; did={getKuaiShouDId()}; userId=1967762954; kuaishou.server.web_ph=4010f04af86c86e788d2df188c640f790cf2;  kuaishou.server.web_st=ChZrdWFpc2hvdS5zZXJ2ZXIud2ViLnN0EqABO8byAqRkHfOOyT5Z9bQ0BvlJPZ2k5eD9ZKQSSV_1IvPGt7OCw-0xM3Hkydj49GWnjmkxL-KzKJLaFzAjnQMNQk8Ri5eORfvLU1e1soL5yYkM1bhF55fcafVR0O9fqoTTqejNFP2aWpcnrrabQU9NGttng9b8_jBrZtNeIa298qOIJdWgw306DCA5dDnRjhqH2LEecsIPRpL0Oz6jLc-fChoSdWlbobCW6oJxuQLJTUr9oj_uIiBNijinOYNjwm5uML9zrEwVOyte87hT2h5I_Kb5ETV7HigFMAE;");
+                string result = HttpHelper.HttpPost("https://www.kuaishou.com/graphql", JsonConvert.SerializeObject(query), "application/json", webHeader);
+                KuaiShouListVO kuaiShouListVO = JsonConvert.DeserializeObject<KuaiShouListVO>(result);
+                foreach (var feed in kuaiShouListVO.data.visionProfilePhotoList.feeds)
+                {
+                    VideoInfo video = new VideoInfo();
+                    video.DiggCount = feed.photo.realLikeCount.ToString();
+                    video.ViewCount = feed.photo.viewCount.ToString();
+                    video.AwemeId = feed.photo.id;
+                    video.Desc = feed.photo.caption;
+                    video.DownLink = feed.photo.videoResource.h264.adaptationSet[0].representation[0].url;
+                    videoInfos.Add(video);
+                }
+            }
+            catch
+            {
+                KuaiShouDID = null;
+                return GetKuaiShouList(url, pcursor);
+            }
+
+            return videoInfos;
+            
+            if (pcursor<= 1.634E12)
+            {
+                return videoInfos;
+            }
+
+            Thread.Sleep(10000);
+            videoInfos.AddRange(GetKuaiShouList(url, pcursor - 0.002E12 ).ToList());
+            return videoInfos.GroupBy(x=>x.AwemeId).Select(x=>x.FirstOrDefault()).ToList();
+        }
+
+        private string getKuaiShouDId()
+        {
+            if (KuaiShouDID != null)
+            {
+                return KuaiShouDID;
+            }
+
+            KuaiShouDID = Interaction.InputBox("请设置快手网站的DIV (可在cookie中找到)", "设置快手DID", "在这里输入", -1, -1);
+            return KuaiShouDID;
+        }
+
+        private string getKuaiShouCookie(string url = "https://www.kuaishou.com/")
+        {
+
+            HttpClient httpClient = new HttpClient();
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
+            httpRequestMessage.RequestUri = new Uri(url);
+            httpRequestMessage.Method = HttpMethod.Get;
+            httpRequestMessage.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36");
+            httpRequestMessage.Headers.Add("Sec-Fetch-User", "1");
+            httpRequestMessage.Headers.Add("Sec-Fetch-Mode", "navigate");
+            httpRequestMessage.Headers.Add("Host", "www.kuaishou.com");
+            var response = httpClient.SendAsync(httpRequestMessage).GetAwaiter().GetResult();
+            var cookies = response.Headers.GetValues("Set-Cookie");
+            return String.Join("; ", cookies.Select(x => x.Split(';')[0]).ToArray());
+        }
+
         //private string GetData(ChromeDriver driver,string uid) {
         //    ct.ThrowIfCancellationRequested();
         //    Thread.Sleep(2000);
@@ -539,7 +577,7 @@ namespace TikTokTools
             var htmlobj = httpHelper.GetHtml(httpItem);
             var reslutStr = htmlobj.Html;
             var result = JsonConvert.DeserializeObject<DouYinModel>(reslutStr);
-            if (result.AwemeList==null||result.AwemeList.Count == 0)
+            if (result.AwemeList == null || result.AwemeList.Count == 0)
             {
                 httpHelper = null;
                 return GetHtml(httpItem);
@@ -553,10 +591,17 @@ namespace TikTokTools
         /// </summary>
         /// <param name="URL">下载文件地址</param>
         /// <param name="Filename">下载后另存为（全路径）</param>
-        private bool DownloadFile(string URL, string filename)
+        private bool DownloadFile(string URL, string filename, ConfigEntity configEntity = null)
         {
             try
             {
+                if (URL.IndexOf(".m3u8") > -1)
+                {
+                    new ConvertHelperCmd(configEntity).runcmd($" -i \"{URL}\" -vcodec copy -acodec copy -absf aac_adtstoasc \"{filename}\"");
+                    return true;
+                }
+
+                //SetDownloadFile(URL, filename);
                 WebClientPro webClient = new WebClientPro();
                 webClient.Headers.Add("Host", new Uri(URL).Host);
                 webClient.Timeout = 5 * 60 * 1000;
@@ -567,6 +612,25 @@ namespace TikTokTools
             catch (System.Exception e)
             {
                 return DownloadFile(URL, filename);
+            }
+        }
+
+        ///<summary>
+        /// 下载，通过http-url去下载文件到本地
+        /// </summary>
+        /// <param name="URL">下载文件地址:HTTP/HTTPS</param>
+        /// <param name="Filename">下载后另存为（全路径）</param>
+        /// <returns>成功时："1"。失败时：返回错误信息</returns>
+        public void SetDownloadFile(System.String str_url, System.String str_filename)
+        {
+            var client = new HttpClient();
+            var byts = client.GetByteArrayAsync(str_url).GetAwaiter().GetResult();
+            using (var stream = File.Create(str_filename))
+            {
+                foreach (var byt in byts)
+                {
+                    stream.WriteByte(byt);
+                }
             }
         }
 
@@ -639,13 +703,7 @@ namespace TikTokTools
                  {
                      //GetVideoListByWebBrowser(txt_url.Text);
                      var videoList = GetVideoList(txt_url.Text);
-                     List<VideoInfo> videoInfos = videoList.Select(x => new VideoInfo(x)).ToList();
-                     Parallel.ForEach<VideoInfo>(videoInfos, (item) =>
-                     {
-                         item.DownLink = GetDouYinVideo("https://www.iesdouyin.com/share/video/"+item.AwemeId);
-                     });
-                    
-                     BinTableData(videoInfos);
+                     BinTableData(videoList.ToList());
                      Logout("视频列表解析成功...");
                  }
                  else
@@ -700,6 +758,13 @@ namespace TikTokTools
                              json = JsonConvert.DeserializeObject<Hashtable>(json["video"].ToString());
                              //DownloadFile(json["srcNoMark"].ToString(), filename);
                              break;
+                         default:
+                             var stringResult = HttpHelper.HttpGet($"https://tenapi.cn/video/?url={txt_url.Text}");
+                             var data = JsonConvert.DeserializeObject<Hashtable>(stringResult);
+                             videoInfo.Desc = data["title"].ToString();
+                             videoInfo.DownLink = data["url"].ToString();
+                             break;
+
                      }
 
                  }
@@ -759,11 +824,12 @@ namespace TikTokTools
             }
         }
 
-        
 
-        private string GetUA() {
+
+        private string GetUA()
+        {
             return string.Format("Mozilla/5.0 (iPhone; CPU iPhone OS {0}_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1", new Random().Next(10, 13));
-             
+
         }
 
         private void btn_Clear_Click(object sender, EventArgs e)
@@ -776,5 +842,6 @@ namespace TikTokTools
         {
 
         }
+
     }
 }
