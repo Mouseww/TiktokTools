@@ -20,28 +20,28 @@ namespace TikTokTools
         [STAThread]
         static void Main()
         {
-            string guid = FingerPrint.Value();
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            /// 更新用
-            WebUtils webUtils = new WebUtils();
-            var newVersion = webUtils.DoGet("https://douyin.fhcollege.com/api/TikTokVersion.php");
-            var oldVersion = Application.ProductVersion.ToString();
-            if (newVersion != oldVersion)
-            {
-                System.Diagnostics.Process.Start(Environment.CurrentDirectory + @"\TikTokTools.Update.exe");
-                System.Environment.Exit(0);
-            }
+            ///// 更新用
+            //WebUtils webUtils = new WebUtils();
+            //var newVersion = webUtils.DoGet("https://douyin.fhcollege.com/api/TikTokVersion.php");
+            //var oldVersion = Application.ProductVersion.ToString();
+            //if (newVersion != oldVersion)
+            //{
+            //    System.Diagnostics.Process.Start(Environment.CurrentDirectory + @"\TikTokTools.Update.exe");
+            //    System.Environment.Exit(0);
+            //}
 
-            /// 如果想卖激活码 取消这里的注释，自己写个接口验证当前机器码是否允许使用
-            var getResult = webUtils.DoGet("https://www.fhcollege.com/api/api/TikTookLogin?guid=" + guid);
-            if (getResult == "true")
-            {
-                Application.Run(new Form1());
-            }
-            else { Application.Run(new Login()); }
-            //Application.Run(new Form1());
+            ///// 如果想卖激活码 取消这里的注释，自己写个接口验证当前机器码是否允许使用
+            //string guid = FingerPrint.Value();
+            //var getResult = webUtils.DoGet("https://www.fhcollege.com/api/api/TikTookLogin?guid=" + guid);
+            //if (getResult == "true")
+            //{
+            //    Application.Run(new Form1());
+            //}
+            //else { Application.Run(new Login()); }
         }
 
         //===================================================解压用的是库函数
