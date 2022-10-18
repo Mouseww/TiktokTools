@@ -54,7 +54,6 @@ namespace TiktokTools.Web.Controllers
             _hubContext.Clients.Client(userId).addNewMessageToPage(msg);
         }
 
-
         public void ResponseLink(string link, string userId = null)
         {
             if (userId == null)
@@ -63,7 +62,6 @@ namespace TiktokTools.Web.Controllers
             }
 
             IHubContext _hubContext = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-
             _hubContext.Clients.Client(userId).adjustSuccess(link);
         }
 
@@ -81,7 +79,6 @@ namespace TiktokTools.Web.Controllers
             return Json(new { Content = "success"});
                 //return new FileInfo();
             }
-
 
         [HttpPost]
         public JsonResult AdjustVideoFromLink(string link, bool mirror, string userId, int cropType)

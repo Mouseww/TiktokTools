@@ -100,7 +100,6 @@
     <Compile Include="FileHelper.cs" />
     <Compile Include="HttpClientHelper.cs" />
     <Compile Include="HttpHelper.cs" />
-    <Compile Include="KuaiShou.cs" />
     <Compile Include="Model\DouYin\DouYinModel.cs" />
     <Compile Include="Model\DouYin\Author.cs" />
     <Compile Include="Model\DouYin\AvatarLarger.cs" />

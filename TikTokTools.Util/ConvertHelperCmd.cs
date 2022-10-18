@@ -85,53 +85,8 @@ namespace TikTokTools.Util
                 try
                 {
                     log(string.Format("当前正在处理第{0}条", i + 1), configEntity.UserID);
-                    Match match = Regex.Match(files[i], @".+\\(.+)");
-                    string filename = match.Groups[1].Value.Replace(".mp4", "");
-                    string inputpath = files[i];
-                    string audiopath = (configEntity.LocalPath + @"\Audio\" + filename + ".mp3").Replace("\\\\", "\\");
-                    string videopath = (configEntity.LocalPath + @"\Video\" + filename + ".mp4").Replace("\\\\", "\\");
-                    string output = (configEntity.LocalPath + @"\Video\" + filename + "_temp.mp4").Replace("\\\\", "\\");
-                    try
-                    {
-                        var file = new MediaInfoDotNet.MediaFile(files[i]);
-                        inputFile = new InputFileInfo(file);
-                    }
-                    catch
-                    {
-                        var file = FFmpeg.GetMediaInfo(files[i]).GetAwaiter().GetResult();
-                        inputFile = new InputFileInfo(file);
-                    }
-                    ct.ThrowIfCancellationRequested();
-                    if (inputFile.hasAudio)
-                    {
-                        log("正在抽离音频...", configEntity.UserID);
-
-                        await BuildAudio(inputpath, audiopath);
-                        ct.ThrowIfCancellationRequested();
-                    }
-
-                    log("正在进行调整视频...", configEntity.UserID);
-                    inputpath = AdjustVideo(inputpath, videopath);
-                    ct.ThrowIfCancellationRequested();
-
-                    log("正在进行视频分段调速处理...", configEntity.UserID);
-                    await AEVideo(inputpath, output);
-                    ct.ThrowIfCancellationRequested();
-
-                    if (inputFile.hasAudio)
-                    {
-
-                        inputpath = output.ToString();
-                        log("正在将音频加入新的视频中...", configEntity.UserID);
-                        output = output.Replace(".mp4", "_Audio.mp4");
-                        await AddAudio(inputpath, audiopath, output);
-                    }
-
-                    copyToFinishFolder(output, output.Replace("\\Video\\", "\\Finish\\"));
-                    log("正在清理临时文件...", configEntity.UserID);
-                    clearFolder(configEntity);
-                    result.Add(output.Replace("\\Video\\", "\\Finish\\"));
-                    ct.ThrowIfCancellationRequested();
+                    result.Add(ConvertVideo(files[i],log,configEntity,ct));
+                    log($"第{i}条处理完成", configEntity.UserID);
                 }
                 catch (Exception ex)
                 {
@@ -164,6 +119,57 @@ namespace TikTokTools.Util
             return result;
         }
 
+        private string ConvertVideo(string filepath, Run log, ConfigEntity configEntity, CancellationToken ct)
+        {
+            Match match = Regex.Match(filepath, @".+\\(.+)");
+            string filename = match.Groups[1].Value.Replace(".mp4", "");
+            string inputpath = filepath;
+            string audiopath = (configEntity.LocalPath + @"\Audio\" + filename + ".mp3").Replace("\\\\", "\\");
+            string videopath = (configEntity.LocalPath + @"\Video\" + filename + ".mp4").Replace("\\\\", "\\");
+            string output = (configEntity.LocalPath + @"\Video\" + filename + "_temp.mp4").Replace("\\\\", "\\");
+            try
+            {
+                var file = new MediaInfoDotNet.MediaFile(filepath);
+                inputFile = new InputFileInfo(file);
+            }
+            catch
+            {
+                var file = FFmpeg.GetMediaInfo(filepath).GetAwaiter().GetResult();
+                inputFile = new InputFileInfo(file);
+            }
+            ct.ThrowIfCancellationRequested();
+            if (inputFile.hasAudio)
+            {
+                log("正在抽离音频...", configEntity.UserID);
+
+                BuildAudio(inputpath, audiopath);
+                ct.ThrowIfCancellationRequested();
+            }
+
+            log("正在进行调整视频...", configEntity.UserID);
+            inputpath = AdjustVideo(inputpath, videopath);
+            ct.ThrowIfCancellationRequested();
+
+            log("正在进行视频分段调速处理...", configEntity.UserID);
+            AEVideo(inputpath, output);
+            ct.ThrowIfCancellationRequested();
+
+            if (inputFile.hasAudio)
+            {
+
+                inputpath = output.ToString();
+                log("正在将音频加入新的视频中...", configEntity.UserID);
+                output = output.Replace(".mp4", "_Audio.mp4");
+                AddAudio(inputpath, audiopath, output);
+            }
+
+            copyToFinishFolder(output, output.Replace("\\Video\\", "\\Finish\\"));
+            log("正在清理临时文件...", configEntity.UserID);
+            clearFolder(configEntity);
+            ct.ThrowIfCancellationRequested();
+            return output.Replace("\\Video\\", "\\Finish\\");
+        }
+
         private void copyToFinishFolder(string output, string v)
         {
             runcmd($" -i \"{output}\" -c:v copy \"{v}\"");
@@ -184,7 +190,13 @@ namespace TikTokTools.Util
 
         }
 
-        private async Task BuildAudio(string input, string audiopath)
+        /// <summary>
+        /// Split Audio and Video
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="audiopath"></param>
+        /// <returns></returns>
+        private void BuildAudio(string input, string audiopath)
         {
             runcmd($" -y -i \"{input}\" -f mp3 \"{audiopath}\"");
         }
@@ -248,37 +260,9 @@ namespace TikTokTools.Util
         /// <param name="audiopath"></param>
         /// <param name="finishpath"></param>
         /// <returns></returns>
-        private async Task AddAudio(string videopath, string audiopath, string finishpath)
+        private void AddAudio(string videopath, string audiopath, string finishpath)
         {
             runcmd(string.Format("-hwaccel qsv -noautorotate -i \"{0}\" -itsoffset 00:00:00.1 -i \"{1}\" -vcodec copy -acodec copy \"{2}\" -y", videopath, audiopath, finishpath));
-        }
-
-        /// <summary>
-        /// 最终调整
-        /// </summary>
-        /// <param name="inputpath"></param>
-        /// <param name="outpath"></param>
-        /// <returns></returns>
-        [Obsolete]
-        private async Task changeVideo(string inputpath, string outpath)
-        {
-            switch (configEntity.CropType)
-            {
-                case 2:
-                    ///竖转横
-                    runcmd($"-hwaccel qsv -noautorotate -i \"{inputpath}\" -lavfi \"[0:v]scale=ih*16/9:-1,boxblur=luma_radius=min(h\\,w)/20:luma_power=1:chroma_radius=min(cw\\,ch)/20:chroma_power=1[bg];[bg][0:v]overlay=(W-w)/2:(H-h)/2,crop=h=iw*9/16\" -vb {inputFile.bitRate / 1000 / 3 * 5}K  \"{outpath}\"");
-                    break;
-                case 1:
-                    ///横转竖
-                    runcmd($"-hwaccel qsv -noautorotate -i \"{inputpath}\"  -lavfi \"[0:v]scale=256/81*iw:256/81*ih,boxblur=luma_radius=min(h\\,w)/40:luma_power=3:chroma_radius=min(cw\\,ch)/40:chroma_power=1[bg];[bg][0:v]overlay=(W-w)/2:(H-h)/2,setsar=1,crop=w=iw*81/256\" -vb {inputFile.bitRate / 1000 / 3 * 5}K  \"{outpath}\"");
-                    break;
-                default:
-                    //正常裁剪
-                    runcmd(string.Format("-hwaccel qsv -noautorotate -i \"{0}\"  -b:v " + (inputFile.bitRate / 1000 / 3 * 5) + "k -bufsize " + (inputFile.bitRate / 1000 / 3 * 5) + "k   -r {1} " +
-                        $"-vf crop=iw-{1.5 * 2}*iw/100:ih-{configEntity.Crop * 2}*ih/100:{1.5}*iw/100:{configEntity.Crop}*ih/100 " + "-s {3}*{4} " +//剪切+分辨率设置
-                        "-vcodec h264 \"{2}\" -y", inputpath, 60, outpath, inputFile.width, inputFile.height));
-                    break;
-            }
         }
 
         /// <summary>
@@ -287,7 +271,7 @@ namespace TikTokTools.Util
         /// <param name="inputpath"></param>
         /// <param name="outputpath"></param>
         /// <returns></returns>
-        private async Task AEVideo(string inputpath, string outputpath)
+        private void AEVideo(string inputpath, string outputpath)
         {
             string guid = Guid.NewGuid().ToString();
             var zs = 1 / inputFile.frameRate;
@@ -324,7 +308,7 @@ namespace TikTokTools.Util
         public void runcmd(string code)
         {
             string str = code;
-
+            string[] errorArray = new string[] { "invalid", "failed", "can not", "exception" };
             using (System.Diagnostics.Process p = new System.Diagnostics.Process())
             {
                 p.StartInfo.FileName = (configEntity.LocalPath + @"\ffmpeg.exe").Replace("\\\\", "\\");
@@ -342,31 +326,23 @@ namespace TikTokTools.Util
                 p.StandardInput.WriteLine("&exit");
 
                 p.StandardInput.AutoFlush = true;
-                //p.StandardInput.WriteLine("exit");
-                //向标准输入写入要执行的命令。这里使用&是批处理命令的符号，表示前面一个命令不管是否执行成功都执行后面(exit)命令，如果不执行exit命令，后面调用ReadToEnd()方法会假死
-                //同类的符号还有&&和||前者表示必须前一个命令执行成功才会执行后面的命令，后者表示必须前一个命令执行失败才会执行后面的命令
-
-
-
-
-                //StreamReader reader = p.StandardOutput;
-                //string line = reader.ReadLine();
-                //while (!reader.EndOfStream)
-                //{
-                //    str += line + "  ";
-                //    line = reader.ReadLine();
-                //}
                 var output = p.StandardError.ReadToEnd();
-                if (output.ToLower().IndexOf("invalid") > -1 || output.ToLower().IndexOf("failed") > -1 || output.ToLower().IndexOf("can not") > -1)
+                if (errorArray.Any(x=>output.ToLower().IndexOf(x)>-1))
                 {
                     throw new Exception(str + "\r\n" + output);
                 }
+
                 p.WaitForExit();
                 p.Close();
             }
 
         }
 
+        /// <summary>
+        /// 拆分出一个Video
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         private string SplitVideo(params string[] param)
         {
             var rui = new Random();
@@ -404,12 +380,5 @@ namespace TikTokTools.Util
                 System.IO.Directory.CreateDirectory(sourcePath);
             }
         }
-
-
-        /// <summary>
-        /// 视频处理器ffmpeg.exe的位置
-        /// </summary>
-        public string FFmpegPath { get; set; }
-
     }
 }

@@ -24,26 +24,17 @@ namespace TikTokTools
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            /// 更新用
             WebUtils webUtils = new WebUtils();
-            var newVersion = webUtils.DoGet("https://douyin.fhcollege.com/api/TikTookVersion.php");
+            var newVersion = webUtils.DoGet("https://douyin.fhcollege.com/api/TikTokVersion.php");
             var oldVersion = Application.ProductVersion.ToString();
-
-            //string filename = Environment.CurrentDirectory + "\\1.1.3_update.zip";
-            //if ( !File.Exists(filename))
-            //{
-            //    WebClient webClient = new WebClient();
-            //    webClient.DownloadFile("https://douyin.fhcollege.com/api/1.1.3_update.zip", filename);
-            //    UnZip(filename, Environment.CurrentDirectory);
-            //    System.Diagnostics.Process.Start(Environment.CurrentDirectory + @"\TikTokTools.Update.exe");
-            //    System.Environment.Exit(0);
-            //}
             if (newVersion != oldVersion)
             {
                 System.Diagnostics.Process.Start(Environment.CurrentDirectory + @"\TikTokTools.Update.exe");
                 System.Environment.Exit(0);
             }
 
-
+            /// 如果想卖激活码 取消这里的注释，自己写个接口验证当前机器码是否允许使用
             var getResult = webUtils.DoGet("https://www.fhcollege.com/api/api/TikTookLogin?guid=" + guid);
             if (getResult == "true")
             {

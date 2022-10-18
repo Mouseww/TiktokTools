@@ -12,7 +12,7 @@ namespace TiktokTools.Web
         public void Send(string id, string message)
         {
             // Call the addNewMessageToPage method to update clients.
-            Clients.All.addNewMessageToPage(id,message);
+            Clients.Client(id).addNewMessageToPage(message);
         }
     }
 }

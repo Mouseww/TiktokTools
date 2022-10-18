@@ -12,6 +12,7 @@ using Xabe.FFmpeg.Downloader;
 
 namespace TikTokTools.Util
 {
+    [Obsolete]
     public class ConvertHelper
     {
         public delegate void Run(string msg, string userId = null);
