@@ -233,6 +233,7 @@
     <Content Include="MediaInfoDotNet.dll" />
     <Content Include="MediaInfoDotNet.xml" />
     <Content Include="Sing.js" />
+    <Content Include="TikTokVersion.php" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Audio\" />
