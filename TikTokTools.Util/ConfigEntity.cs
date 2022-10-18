@@ -28,11 +28,15 @@ namespace TikTokTools.Util
             Audio = true;
             AutoCZ = true;
             Crop = 3;
+            UserID = null;
+            CropType = 0;
         }
 
         public VideoSource VideoSource { get; set; }
 
         public bool IsFilePath { get; set; }
+
+        public string UserID { get; set; }
 
         public string SourcePath { get; set; }
 
@@ -72,5 +76,10 @@ namespace TikTokTools.Util
         public bool AutoCZ { get; set; }
 
         public decimal Crop { get; set; }
+
+        /// <summary>
+        /// 0: Normal 1:横传竖 2:竖转横
+        /// </summary>
+        public int CropType { get; set; }
     }
 }

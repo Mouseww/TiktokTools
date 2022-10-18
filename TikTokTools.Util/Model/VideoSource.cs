@@ -14,7 +14,9 @@ namespace TikTokTools.Util
         [EnumMember]
         DouYin = 2,
         [EnumMember]
-        KuaiShou = 3
+        KuaiShou = 3,
+        [EnumMember]
+        Unknown = 0
 
     }
 }

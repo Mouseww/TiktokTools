@@ -419,13 +419,18 @@ namespace TikTokTools.Util
 
 
 
-        public static string HttpGet(string Url, WebHeaderCollection header = null, bool isUA = true, bool AllowAutoRedirect = false)
+        public static string HttpGet(string Url, WebHeaderCollection header = null, bool isUA = true, bool AllowAutoRedirect = false, CookieContainer CookieContainer=null)
         {
             try
             {
                 string retString = string.Empty;
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+                if (CookieContainer != null)
+                {
+                    request.CookieContainer = CookieContainer;
+                }
+               
                 if (header != null)
                 {
                     request.Headers = header;
@@ -434,6 +439,12 @@ namespace TikTokTools.Util
                 {
                     request.UserAgent=string.Format("Mozilla/5.0 (Linux; Android {0}; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Mobile Safari/537.36",new Random().NextDouble()*10);
                 }
+                else
+                {
+                    request.UserAgent = "Mozilla /5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36";
+                    
+                }
+
                 request.Method = "GET";
                 request.AllowAutoRedirect = AllowAutoRedirect;
                 //request.UserAgent = "Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1";

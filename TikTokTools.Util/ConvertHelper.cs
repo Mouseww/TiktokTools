@@ -14,7 +14,7 @@ namespace TikTokTools.Util
 {
     public class ConvertHelper
     {
-        public delegate void Run(string msg);
+        public delegate void Run(string msg, string userId = null);
         Run log;
         ConfigEntity configEntity;
         CancellationToken ct;

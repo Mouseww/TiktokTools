@@ -49,7 +49,7 @@ namespace TiktokTools.Web.Controllers
             get { return cts.Token; }
         }
 
-        public void RunLog(string msg) {
+        public void RunLog(string msg, string userId = null) {
             Console.WriteLine(msg);
         }
 
@@ -72,7 +72,7 @@ namespace TiktokTools.Web.Controllers
             Run changestatus = new Run(RunLog);
             try
             {
-                var resultdata = new ConvertHelperCmd().Convert(config, log, ct, changestatus);
+                var resultdata = new ConvertHelperCmd().ConvertAsync(config, log, ct, changestatus).GetAwaiter().GetResult();
                 foreach (var item in resultdata)
                 {
                     var array = item.Split('\\');
