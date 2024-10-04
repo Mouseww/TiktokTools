@@ -1,5 +1,8 @@
 # TiktokTools
 TikTok\抖音\快手\本地  视频批量去重工具， 包含WEB版和window桌面版
+
+[软著证书.pdf](https://github.com/user-attachments/files/17252840/default.pdf)
+
 [丽伟视频批量处理工具_使用文档.docx](https://github.com/user-attachments/files/16686516/_.docx)
 
 ***源码只是对视频做一些快速处理，不针对任何视频平台或app***
